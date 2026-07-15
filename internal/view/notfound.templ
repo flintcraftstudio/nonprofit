@@ -1,0 +1,28 @@
+package view
+
+// NotFoundPage is the gentle 404. People reach it from dead links in
+// support-group posts and old shares, so the tone stays soft and offers a
+// couple of steady places to go rather than a blunt "error".
+templ NotFoundPage() {
+	@SiteBase(
+		"Page not found",
+		"That page isn't here — but you are, and you're welcome. Let's find you something steady.",
+		"",
+		false,
+		notFoundContent(),
+	)
+}
+
+templ notFoundContent() {
+	<div class="cw-page-fade">
+		<section class="mx-auto flex min-h-[60vh] max-w-[620px] flex-col items-center justify-center px-6 py-[clamp(60px,10vw,110px)] text-center">
+			@cwEyebrow("Page not found")
+			<h1 class="m-0 font-lora text-[clamp(30px,4.4vw,44px)] font-medium leading-[1.18] tracking-[-0.015em] text-cw-ink">This path led somewhere quiet.</h1>
+			<p class="mx-auto mb-9 mt-5 max-w-[460px] text-[18px] leading-[1.7] text-cw-slate">The page you were looking for isn&#39;t here — links move, and sometimes we lose our way. Let&#39;s get you back to something steady.</p>
+			<div class="flex flex-wrap justify-center gap-4">
+				@cwBtnPrimary("/", "Return home")
+				@cwBtnOutline("/resources", "Take what you need")
+			</div>
+		</section>
+	</div>
+}

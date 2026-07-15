@@ -13,7 +13,29 @@ var (
 	PixelID          string
 	GtagID           string
 	TurnstileSiteKey string
+	// SiteURL is the canonical origin (no trailing slash), used to build
+	// absolute canonical + Open Graph URLs. Empty in dev; when empty the
+	// templates fall back to root-relative URLs.
+	SiteURL string
 )
+
+// CanonicalURL returns the absolute URL for a path when SiteURL is configured,
+// otherwise the root-relative path itself (a valid relative canonical).
+func CanonicalURL(path string) string {
+	if SiteURL == "" {
+		return path
+	}
+	return SiteURL + path
+}
+
+// AssetURL returns an absolute URL for a static asset when SiteURL is set
+// (Open Graph images should be absolute), else the root-relative path.
+func AssetURL(path string) string {
+	if SiteURL == "" {
+		return path
+	}
+	return SiteURL + path
+}
 
 // Year returns the current year for copyright notices.
 func Year() int {
@@ -26,14 +48,21 @@ type NavItem struct {
 	Label string
 }
 
-// NavItems are the primary navigation links for "Carried With Us", in order.
-// Donate is rendered separately as an accented button.
+// NavItems are the primary navigation links for "Carried With Us", in order —
+// the emotional core, kept to five so the desktop bar stays scannable. Donate
+// is rendered separately as an accented button.
 var NavItems = []NavItem{
 	{"/about", "About"},
 	{"/podcast", "Podcast"},
 	{"/community", "Community"},
 	{"/resources", "Resources"},
 	{"/events", "Events"},
+}
+
+// SecondaryNavItems are the supporting links kept out of the primary desktop
+// bar (which would otherwise be overcrowded). They still appear in the footer
+// sitemap and the mobile menu, so nothing becomes unreachable.
+var SecondaryNavItems = []NavItem{
 	{"/shop", "Shop"},
 	{"/coaching", "Coaching"},
 	{"/contact", "Contact"},

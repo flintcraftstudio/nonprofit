@@ -51,6 +51,12 @@ func main() {
 		slog.Warn("PIXEL_ID not set, Facebook Pixel disabled")
 	}
 
+	// Canonical origin for absolute canonical + Open Graph URLs (optional).
+	view.SiteURL = cfg.SiteURL
+	if cfg.SiteURL == "" {
+		slog.Warn("SITE_URL not set, canonical and Open Graph URLs will be relative")
+	}
+
 	// Turnstile
 	view.TurnstileSiteKey = cfg.TurnstileSiteKey
 	if cfg.TurnstileSiteKey == "" || cfg.TurnstileSecretKey == "" {
@@ -117,8 +123,14 @@ func main() {
 	// Static files
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 
-	// Public "Carried With Us" site
-	mux.Handle("GET /", handler.Home())
+	// Legacy favicon probe → serve the real icon (browsers use the <link
+	// rel="icon"> tags, but some clients still request /favicon.ico directly).
+	mux.Handle("GET /favicon.ico", http.RedirectHandler("/static/img/favicon.ico", http.StatusMovedPermanently))
+
+	// Public "Carried With Us" site. "/{$}" matches only the exact root so
+	// unknown paths hit the catch-all 404 below instead of the homepage.
+	mux.Handle("GET /{$}", handler.Home())
+	mux.Handle("GET /", handler.NotFound())
 	mux.Handle("GET /about", handler.About())
 	mux.Handle("GET /podcast", handler.Podcast())
 	mux.Handle("GET /community", handler.Community())

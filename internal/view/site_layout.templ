@@ -16,6 +16,30 @@ templ SiteBase(title, description, active string, isHome bool, body templ.Compon
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<meta name="description" content={ description }/>
 			<title>{ title } | { SiteName }</title>
+			if active != "" {
+				<link rel="canonical" href={ CanonicalURL(active) }/>
+			}
+			<meta name="theme-color" content="#24243a"/>
+			<!-- Icons -->
+			<link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml"/>
+			<link rel="alternate icon" href="/static/img/favicon.ico" sizes="any"/>
+			<link rel="apple-touch-icon" href="/static/img/apple-touch-icon.png"/>
+			<!-- Open Graph / Twitter — so a shared link previews with the dawn hero -->
+			<meta property="og:type" content="website"/>
+			<meta property="og:site_name" content={ SiteName }/>
+			<meta property="og:title" content={ title + " | " + SiteName }/>
+			<meta property="og:description" content={ description }/>
+			if active != "" {
+				<meta property="og:url" content={ CanonicalURL(active) }/>
+			}
+			<meta property="og:image" content={ AssetURL("/static/img/og-cover.png") }/>
+			<meta property="og:image:width" content="1200"/>
+			<meta property="og:image:height" content="630"/>
+			<meta property="og:image:alt" content="Carried With Us — you are not alone in this."/>
+			<meta name="twitter:card" content="summary_large_image"/>
+			<meta name="twitter:title" content={ title + " | " + SiteName }/>
+			<meta name="twitter:description" content={ description }/>
+			<meta name="twitter:image" content={ AssetURL("/static/img/og-cover.png") }/>
 			if GtagID != "" {
 				<script async src={ "https://www.googletagmanager.com/gtag/js?id=" + GtagID }></script>
 				@gtagInit()
@@ -32,8 +56,9 @@ templ SiteBase(title, description, active string, isHome bool, body templ.Compon
 			<script src="/static/js/alpine.min.js" defer></script>
 		</head>
 		<body class="min-h-screen overflow-x-hidden bg-cw-bg font-sans3 text-[15px] font-normal text-cw-ink antialiased">
+			<a href="#main-content" class="sr-only rounded-full focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:bg-cw-ink focus:px-5 focus:py-2.5 focus:text-[14.5px] focus:font-semibold focus:text-cw-bg">Skip to content</a>
 			@siteNav(active, isHome)
-			<main class={ templ.KV("pt-[70px]", !isHome) }>
+			<main id="main-content" tabindex="-1" class={ templ.KV("pt-[70px]", !isHome) }>
 				@body
 			</main>
 			@siteFooter()
@@ -50,6 +75,7 @@ templ siteNav(active string, isHome bool) {
 		x-data={ navData(isHome) }
 		x-bind:class="(home && top) ? 'cw-nav--hero' : 'cw-nav--solid'"
 		@scroll.window.passive="top = window.scrollY < 60"
+		@keydown.escape.window="if (open) { open = false; $refs.toggle.focus() }"
 	>
 		<div class="mx-auto flex max-w-6xl items-center justify-between px-5 sm:px-8">
 			<a href="/" class="font-lora text-[21px] tracking-[0.01em] whitespace-nowrap">{ SiteName }</a>
@@ -70,8 +96,10 @@ templ siteNav(active string, isHome bool) {
 			<button
 				type="button"
 				class="lg:hidden"
-				@click="open = !open"
+				x-ref="toggle"
+				@click="open = !open; open && $nextTick(() => $refs.mpanel.querySelector('a')?.focus())"
 				:aria-expanded="open"
+				aria-controls="mobile-menu"
 				aria-label="Toggle navigation menu"
 			>
 				<svg x-show="!open" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="4" y1="8" x2="20" y2="8"></line><line x1="4" y1="16" x2="20" y2="16"></line></svg>
@@ -80,6 +108,8 @@ templ siteNav(active string, isHome bool) {
 		</div>
 		<!-- mobile panel -->
 		<div
+			id="mobile-menu"
+			x-ref="mpanel"
 			x-show="open"
 			x-cloak
 			x-transition
@@ -87,6 +117,10 @@ templ siteNav(active string, isHome bool) {
 			@click.outside="open = false"
 		>
 			for _, item := range NavItems {
+				<a href={ templ.SafeURL(item.Href) } class={ "block px-6 py-2.5 text-[15px] transition hover:text-cw-gold-deep",
+					templ.KV("font-semibold text-cw-gold-deep", active == item.Href) }>{ item.Label }</a>
+			}
+			for _, item := range SecondaryNavItems {
 				<a href={ templ.SafeURL(item.Href) } class={ "block px-6 py-2.5 text-[15px] transition hover:text-cw-gold-deep",
 					templ.KV("font-semibold text-cw-gold-deep", active == item.Href) }>{ item.Label }</a>
 			}
@@ -125,6 +159,9 @@ templ siteFooter() {
 					for _, item := range NavItems {
 						<a href={ templ.SafeURL(item.Href) } class="text-left text-[14.5px] text-cw-bg/80 transition hover:text-cw-bg">{ item.Label }</a>
 					}
+					for _, item := range SecondaryNavItems {
+						<a href={ templ.SafeURL(item.Href) } class="text-left text-[14.5px] text-cw-bg/80 transition hover:text-cw-bg">{ item.Label }</a>
+					}
 					<a href="/donate" class="text-left text-[14.5px] text-cw-bg/80 transition hover:text-cw-bg">Donate</a>
 				</div>
 			</div>
@@ -134,7 +171,7 @@ templ siteFooter() {
 					Some of us arrive here in the rawest part of grief. If you are struggling to stay safe right now, please reach out — in the U.S. you can call or text <strong class="text-cw-bg">988</strong> to reach the Suicide &amp; Crisis Lifeline, any hour of any day. You do not have to carry tonight alone.
 				</p>
 			</div>
-			<div class="mt-9 text-[13px] text-cw-bg/45">&copy; { fmt.Sprint(Year()) } { SiteName }. Made by parents, for parents.</div>
+			<div class="mt-9 text-[13px] text-cw-bg/60">&copy; { fmt.Sprint(Year()) } { SiteName }. Made by parents, for parents.</div>
 		</div>
 	</footer>
 }

@@ -4,6 +4,10 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
   content: [
     "./internal/view/**/*.templ",
+    // Class-emitting Go helpers (e.g. navInitClass in shared.go) live here too;
+    // without this glob Tailwind purges rules whose only token is in .go —
+    // which silently deleted the base .cw-nav rule and broke the nav.
+    "./internal/view/**/*.go",
   ],
   theme: {
     extend: {
@@ -47,10 +51,10 @@ module.exports = {
           "violet-lo": "#8a6f8f", // muted violet
           slate:       "#4a4960", // body copy on light
           gold:        "#b98a3e", // links
-          "gold-deep": "#8f6a2c", // link hover / accent text
+          "gold-deep": "#7d5c22", // link hover / accent text (text-safe: 5.4:1 on cream)
           glow:        "#e4be83", // candle gold — donate + accents
-          terracotta:  "#c27b64", // eyebrow accent
-          muted:       "#8a7d78", // small muted labels
+          terracotta:  "#a3543f", // eyebrow / label accent (text-safe: 4.7:1 on cream)
+          muted:       "#6f645f", // small muted labels (text-safe: 5.0:1 on cream)
           tan:         "#c8b9a3", // warm button borders
           line:        "rgba(85,87,138,0.12)", // violet hairlines
         },

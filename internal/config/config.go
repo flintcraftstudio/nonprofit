@@ -21,6 +21,7 @@ type Config struct {
 	TurnstileSecretKey string
 	DBPath             string
 	SessionSecret      string
+	SiteURL            string // canonical origin (e.g. https://carriedwith.us), no trailing slash
 }
 
 // Load reads configuration from environment variables, applying defaults where not set.
@@ -49,6 +50,7 @@ func Load() (*Config, error) {
 		TurnstileSecretKey: os.Getenv("TURNSTILE_SECRET_KEY"),
 		DBPath:             envDefault("DB_PATH", "./data/app.db"),
 		SessionSecret:      secret,
+		SiteURL:            trimTrailingSlash(os.Getenv("SITE_URL")),
 	}, nil
 }
 
@@ -93,6 +95,15 @@ func envDefault(key, fallback string) string {
 		return val
 	}
 	return fallback
+}
+
+// trimTrailingSlash removes a single trailing slash so SiteURL + path never
+// produces a doubled slash. Empty stays empty (SiteURL is optional).
+func trimTrailingSlash(s string) string {
+	if len(s) > 0 && s[len(s)-1] == '/' {
+		return s[:len(s)-1]
+	}
+	return s
 }
 
 // parseInt reads an environment variable as an integer, returning the fallback if unset.

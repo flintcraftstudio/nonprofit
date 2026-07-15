@@ -1,5 +1,63 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600&display=swap");
+/* ---------------------------------------------------------------------------
+   Self-hosted fonts. Served from our own /static/fonts (embed-friendly) rather
+   than fonts.googleapis.com so there is no render-blocking third-party request
+   chain and no visitor IP leak to Google — which matters more than usual for a
+   grief-support audience. Lora + Source Sans 3 are the public "Carried With Us"
+   faces; Cormorant Garamond + DM Sans are admin-only (Flint & Ember) and are
+   never fetched on public pages because nothing there references them.
+   All subsets are latin-only. font-display: swap keeps text visible immediately.
+--------------------------------------------------------------------------- */
+/* Public — Carried With Us */
+@font-face {
+  font-family: "Lora";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/static/fonts/lora-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Lora";
+  font-style: italic;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("/static/fonts/lora-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 300 600;
+  font-display: swap;
+  src: url("/static/fonts/source-sans-3.woff2") format("woff2");
+}
+/* Admin — Flint & Ember */
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("/static/fonts/cormorant-garamond-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: italic;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("/static/fonts/cormorant-garamond-400-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 300 500;
+  font-display: swap;
+  src: url("/static/fonts/dm-sans-300-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DM Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/static/fonts/dm-sans-400-italic.woff2") format("woff2");
+}
 
 @tailwind base;
 @tailwind components;
@@ -59,33 +117,42 @@
    Motion — the dawn hero. A slow sunrise, names that glow like candlelight,
    and a gentle rise for copy. All silenced under prefers-reduced-motion.
 --------------------------------------------------------------------------- */
+/* The top edge of the warm "sun" band. The horizon (the cream line the band
+   settles into) is a fixed stop; only this edge travels, so the glow *widens*
+   upward at dawn rather than the whole sky sliding up. Registered so it can be
+   interpolated in a keyframe; the resting value is the full, bloomed band. */
+@property --sun-top {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 46%;
+}
 @keyframes cwSunrise {
   from {
-    background-position: center 0%;
+    /* a thin warm strip hugging the horizon */
+    --sun-top: 58%;
   }
   to {
-    background-position: center 68%;
+    /* the sun band fully bloomed */
+    --sun-top: 46%;
   }
 }
 @keyframes cwCandleGlow {
   0% {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translate3d(0, 16px, 0);
   }
   16% {
     opacity: 0.82;
   }
   50% {
     opacity: 0.92;
-    text-shadow: 0 0 20px rgba(233, 197, 143, 0.6);
   }
   82% {
     opacity: 0.45;
-    text-shadow: 0 0 10px rgba(233, 197, 143, 0.3);
   }
   100% {
     opacity: 0;
-    transform: translateY(-48px);
+    transform: translate3d(0, -48px, 0);
   }
 }
 @keyframes cwPageFade {
@@ -110,33 +177,74 @@
 }
 
 .cw-hero {
-  background-size: 100% 148%;
-  background-position: center 68%;
+  /* The dawn gradient. Everything from the gold sun (60%) down to the cream
+     horizon (68%) is a FIXED stop — the horizon never moves. Only --sun-top,
+     the sky/warm boundary, is animated, so cwSunrise widens the warm band up
+     into the violet pre-dawn while the horizon stays put. The `, 46%` fallback
+     keeps a valid, fully-bloomed gradient on browsers without @property. */
+  background-image: linear-gradient(
+    180deg,
+    #1c1b2d 0%,
+    #201f33 22%,
+    #322f4c 33%,
+    #4a4463 41%,
+    #6a6183 var(--sun-top, 46%),
+    #b5927f calc((var(--sun-top, 46%) + 60%) / 2),
+    #e6c08a 60%,
+    #f2e2c8 64%,
+    #f4efe5 68%,
+    #f4efe5 100%
+  );
   animation: cwSunrise 3.6s cubic-bezier(0.33, 0, 0.22, 1) 0.2s both;
 }
 .cw-page-fade {
   animation: cwPageFade 0.6s ease both;
 }
 .cw-soft-rise {
-  animation: cwSoftRise 1.6s ease 2.5s both;
+  /* Short delay + fade so the headline (the LCP element) paints early. The
+     slow orchestrated intro is carried by the sunrise + names, not by holding
+     the copy hidden for 2.5s. */
+  animation: cwSoftRise 1s ease 0.35s both;
 }
 .cw-name {
-  animation: cwCandleGlow 8s ease-in-out infinite;
+  /* `backwards` fill holds the invisible 0% state through the per-name
+     animation-delay, so delayed names fade in cleanly instead of snapping from
+     fully-opaque to hidden when their loop starts. The 3D translate in the
+     keyframes promotes each name to its own compositor layer, so the drift is
+     GPU-composited and the glyphs aren't re-rasterized mid-motion (no shimmer).
+     The glow is a STATIC shadow — it rides the element's own opacity instead of
+     being animated per frame, which is what made the old motion janky. */
+  animation: cwCandleGlow 8s ease-in-out infinite backwards;
+  text-shadow: 0 0 18px rgba(233, 197, 143, 0.5);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Silence every autoplaying animation and land each on a good static state.
+     Deliberately targeted rather than a global `* { animation: none }` catch-
+     all: cwCandleGlow is infinite and ends at opacity 0, so a blanket reset
+     (or the common `animation-iteration-count: 1` pattern) would run it to its
+     end and make the names vanish. Here each element gets an explicit resting
+     state instead. */
   .cw-hero,
   .cw-page-fade,
   .cw-soft-rise,
   .cw-name {
     animation: none !important;
   }
+  /* .cw-hero: with the animation off, --sun-top falls back to its 46% initial
+     value, so the dawn gradient rests fully bloomed (no band movement). */
   .cw-name {
+    /* names hold as a calm, static remembrance field — no drift, no flicker */
     opacity: 0.62 !important;
     transform: none !important;
   }
   .cw-soft-rise {
     opacity: 1 !important;
     transform: none !important;
+  }
+  /* The nav's solid/hero state still changes on scroll, but instantly — no
+     0.35s size/colour transition to read as motion. */
+  .cw-nav {
+    transition: none !important;
   }
 }

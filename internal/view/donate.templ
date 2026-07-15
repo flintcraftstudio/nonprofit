@@ -26,7 +26,7 @@ templ donateContent() {
 
 			<div
 				class="rounded-[18px] border border-cw-line bg-white p-8 shadow-[0_24px_50px_-30px_rgba(44,43,63,0.3)]"
-				x-data="{ monthly: false, amount: 75 }"
+				x-data="{ monthly: new URLSearchParams(location.search).get('frequency') === 'monthly', amount: 75 }"
 			>
 				<!-- frequency -->
 				<div class="mb-[26px] flex rounded-full bg-cw-sand p-1.5">
