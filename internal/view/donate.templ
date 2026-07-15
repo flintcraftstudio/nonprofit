@@ -53,7 +53,7 @@ templ donateContent() {
 				<button
 					type="button"
 					@click="$refs.demo.style.display = 'block'"
-					class="w-full rounded-full bg-cw-glow py-4 text-[16px] font-bold text-cw-ink transition hover:bg-[#d9ad6e]"
+					class="w-full rounded-full bg-cw-glow py-4 text-[16px] font-bold text-cw-ink transition hover:bg-cw-glow-hover"
 					x-text="monthly ? ('Give $' + amount + ' monthly') : ('Give $' + amount)"
 				>Give $75</button>
 				<p x-ref="demo" style="display:none" class="mt-3 text-center text-[13px] text-cw-terracotta">This is a preview — secure payment isn't connected yet.</p>
@@ -70,6 +70,6 @@ templ donateAmount(value int) {
 		type="button"
 		@click={ fmt.Sprintf("amount = %d", value) }
 		class="rounded-xl border-[1.5px] py-[15px] text-center font-lora text-[18px] text-cw-ink transition"
-		:class={ fmt.Sprintf("amount === %d ? 'border-cw-terracotta bg-[rgba(194,123,100,0.1)]' : 'border-cw-line bg-[#faf6ef]'", value) }
+		:class={ fmt.Sprintf("amount === %d ? 'border-cw-terracotta bg-[rgba(194,123,100,0.1)]' : 'border-cw-line bg-cw-tile'", value) }
 	>${ fmt.Sprint(value) }</button>
 }

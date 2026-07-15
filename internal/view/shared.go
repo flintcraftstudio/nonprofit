@@ -2,11 +2,17 @@ package view
 
 import (
 	"fmt"
+	"math"
 	"time"
 )
 
 // SiteName is the display name used in templates. Override per-project.
 const SiteName = "Carried With Us"
+
+// CwNight is the darkest public surface, used for the browser theme-color meta
+// (a raw HTML attribute, so it can't reference the Tailwind class). Keep in
+// sync with the cw.night token in tailwind/tailwind.config.js.
+const CwNight = "#24243a"
 
 // Tracking IDs and Turnstile site key, set once at startup from config.
 var (
@@ -118,9 +124,18 @@ var HeroNames = []HeroName{
 }
 
 // heroNameStyle builds the absolute-position + animation inline style for one
-// drifting hero name.
+// drifting hero name. The font-size is a clamp() around the per-name Size (the
+// preferred/mid value): it shrinks toward ~0.62× on narrow phones and grows
+// toward ~1.22× on wide screens, tracking the viewport-percentage width of the
+// names field so the remembrance field scales instead of clustering.
 func heroNameStyle(n HeroName) string {
-	return fmt.Sprintf("left:%s;top:%s;font-size:%dpx;animation-delay:%s;animation-duration:%s", n.Left, n.Top, n.Size, n.Delay, n.Dur)
+	minPx := int(math.Round(float64(n.Size) * 0.62))
+	maxPx := int(math.Round(float64(n.Size) * 1.22))
+	prefVw := float64(n.Size) / 10.5 // ≈ Size px around a ~1050px-wide viewport
+	return fmt.Sprintf(
+		"left:%s;top:%s;font-size:clamp(%dpx,%.2fvw,%dpx);animation-delay:%s;animation-duration:%s",
+		n.Left, n.Top, minPx, prefVw, maxPx, n.Delay, n.Dur,
+	)
 }
 
 // The slices below are placeholder demo content for the proof-of-concept. In a

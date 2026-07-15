@@ -11,6 +11,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      // Short-viewport variant (e.g. landscape phones ~375–560px tall) so the
+      // hero can shed its names field and tighten padding before it clips.
+      screens: {
+        short: { raw: "(max-height: 560px)" },
+      },
       colors: {
         ff: {
           // Flint — warm charcoal neutrals (cool stone, faintly warmed)
@@ -44,18 +49,24 @@ module.exports = {
         cw: {
           bg:          "#f4efe5", // page cream
           card:        "#f7f2e9", // card / raised surface
+          "card-hover":"#faf5ec", // pathway tile hover (lifted cream)
+          tile:        "#faf6ef", // donate amount tile resting surface
           sand:        "#efe7d8", // deeper cream (section gradients)
           ink:         "#2c2b3f", // primary headings / plum-black text
-          night:       "#24243a", // footer + darkest sections
+          night:       "#24243a", // footer + darkest sections (also theme-color meta)
           violet:      "#55578a", // secondary text + primary button
+          "violet-hover":"#494b7a", // primary button hover (deepened violet)
           "violet-lo": "#8a6f8f", // muted violet
           slate:       "#4a4960", // body copy on light
           gold:        "#b98a3e", // links
           "gold-deep": "#7d5c22", // link hover / accent text (text-safe: 5.4:1 on cream)
           glow:        "#e4be83", // candle gold — donate + accents
+          "glow-hover":"#d9ad6e", // gold button hover (deepened candle gold)
+          clay:        "#c8956c", // warm episode-number / minor accent
           terracotta:  "#a3543f", // eyebrow / label accent (text-safe: 4.7:1 on cream)
           muted:       "#6f645f", // small muted labels (text-safe: 5.0:1 on cream)
           tan:         "#c8b9a3", // warm button borders
+          name:        "#f6ead0", // drifting hero remembrance names
           line:        "rgba(85,87,138,0.12)", // violet hairlines
         },
       },

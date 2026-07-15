@@ -19,7 +19,7 @@ templ SiteBase(title, description, active string, isHome bool, body templ.Compon
 			if active != "" {
 				<link rel="canonical" href={ CanonicalURL(active) }/>
 			}
-			<meta name="theme-color" content="#24243a"/>
+			<meta name="theme-color" content={ CwNight }/>
 			<!-- Icons -->
 			<link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml"/>
 			<link rel="alternate icon" href="/static/img/favicon.ico" sizes="any"/>
@@ -58,7 +58,7 @@ templ SiteBase(title, description, active string, isHome bool, body templ.Compon
 		<body class="min-h-screen overflow-x-hidden bg-cw-bg font-sans3 text-[15px] font-normal text-cw-ink antialiased">
 			<a href="#main-content" class="sr-only rounded-full focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:bg-cw-ink focus:px-5 focus:py-2.5 focus:text-[14.5px] focus:font-semibold focus:text-cw-bg">Skip to content</a>
 			@siteNav(active, isHome)
-			<main id="main-content" tabindex="-1" class={ templ.KV("pt-[70px]", !isHome) }>
+			<main id="main-content" tabindex="-1" class={ templ.KV("pt-[var(--cw-nav-h)]", !isHome) }>
 				@body
 			</main>
 			@siteFooter()
@@ -189,7 +189,7 @@ templ cwEyebrow(label string) {
 templ cwBtnPrimary(href, label string) {
 	<a
 		href={ templ.SafeURL(href) }
-		class="inline-block rounded-full bg-cw-violet px-[26px] py-[14px] text-[15.5px] font-semibold text-cw-bg shadow-[0_12px_26px_-12px_rgba(85,87,138,0.65)] transition hover:bg-[#494b7a]"
+		class="inline-block rounded-full bg-cw-violet px-[26px] py-[14px] text-[15.5px] font-semibold text-cw-bg shadow-[0_12px_26px_-12px_rgba(85,87,138,0.65)] transition hover:bg-cw-violet-hover"
 	>{ label }</a>
 }
 
@@ -205,7 +205,7 @@ templ cwBtnOutline(href, label string) {
 templ cwBtnGold(href, label string) {
 	<a
 		href={ templ.SafeURL(href) }
-		class="inline-block rounded-full bg-cw-glow px-[30px] py-[14px] text-[15.5px] font-bold text-cw-ink transition hover:bg-[#d9ad6e]"
+		class="inline-block rounded-full bg-cw-glow px-[30px] py-[14px] text-[15.5px] font-bold text-cw-ink transition hover:bg-cw-glow-hover"
 	>{ label }</a>
 }
 

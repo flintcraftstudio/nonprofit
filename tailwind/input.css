@@ -64,6 +64,17 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Height of the solid fixed nav (interior pages + scrolled home). Single
+       source for the interior <main> top offset AND in-page anchor clearance,
+       so they can never drift apart. Matches the .cw-nav--solid bar height
+       (0.85rem vertical padding + the Donate pill); update here if that changes. */
+    --cw-nav-h: 70px;
+  }
+  /* In-page anchors (#section links) land below the fixed nav, not under it. */
+  html {
+    scroll-padding-top: var(--cw-nav-h);
+  }
   ::selection {
     background: rgba(219, 123, 52, 0.32);
     color: #f5efe6;
@@ -142,13 +153,22 @@
     transform: translate3d(0, 16px, 0);
   }
   16% {
-    opacity: 0.82;
+    opacity: 0.72;
   }
-  50% {
-    opacity: 0.92;
+  46% {
+    /* a soft, steady glow... */
+    opacity: 0.74;
+  }
+  53% {
+    /* ...then a brief bloom to full brightness — the "pop" */
+    opacity: 1;
+  }
+  62% {
+    /* and it eases back down */
+    opacity: 0.72;
   }
   82% {
-    opacity: 0.45;
+    opacity: 0.4;
   }
   100% {
     opacity: 0;
@@ -213,9 +233,12 @@
      keyframes promotes each name to its own compositor layer, so the drift is
      GPU-composited and the glyphs aren't re-rasterized mid-motion (no shimmer).
      The glow is a STATIC shadow — it rides the element's own opacity instead of
-     being animated per frame, which is what made the old motion janky. */
+     being animated per frame, which is what made the old motion janky. A tight
+     bright cream core over a wider warm halo, so when a name blooms to full
+     opacity at the peak of its cycle it visibly pops, while resting names (and
+     the reduced-motion static field at 0.62) stay soft. */
   animation: cwCandleGlow 8s ease-in-out infinite backwards;
-  text-shadow: 0 0 18px rgba(233, 197, 143, 0.5);
+  text-shadow: 0 0 9px rgba(246, 234, 208, 0.55), 0 0 26px rgba(233, 197, 143, 0.5);
 }
 
 @media (prefers-reduced-motion: reduce) {

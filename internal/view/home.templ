@@ -19,13 +19,13 @@ templ homeContent() {
 		     The dawn gradient lives in the .cw-hero rule (background-image
 		     longhand) so the sunrise actually animates. -->
 		<section
-			class="cw-hero relative flex min-h-screen flex-col items-center justify-between overflow-hidden px-6 pb-[7vh] pt-[13vh]"
+			class="cw-hero relative flex min-h-screen flex-col items-center justify-between overflow-hidden px-6 pb-[7vh] pt-[13vh] short:justify-center short:pb-8 short:pt-[76px]"
 		>
 			<!-- Screen-reader framing so the names below aren't read as an
 			     unexplained list — for this audience that framing matters. -->
 			<p class="sr-only">The names drifting in the sky below belong to children who are loved and remembered.</p>
 			<!-- glowing names field (decorative for assistive tech) -->
-			<div aria-hidden="true" class="pointer-events-none relative z-[2] mx-auto h-[clamp(160px,26vh,280px)] w-full max-w-[1040px] font-lora italic text-[#f6ead0]">
+			<div aria-hidden="true" class="pointer-events-none relative z-[2] mx-auto h-[clamp(160px,26vh,280px)] w-full max-w-[min(1440px,94vw)] font-lora italic text-cw-name short:hidden">
 				for _, n := range HeroNames {
 					<span class="cw-name absolute" style={ heroNameStyle(n) }>{ n.Name }</span>
 				}
@@ -35,14 +35,16 @@ templ homeContent() {
 				<!-- soft dawn scrim: guarantees the headline stays legible no
 				     matter which gradient band it lands on across viewports. -->
 				<div class="pointer-events-none absolute left-1/2 top-1/2 -z-[1] h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(244,239,229,0.94)_0%,rgba(244,239,229,0.8)_40%,rgba(244,239,229,0)_72%)]"></div>
-				<div class="mb-[22px] text-[13px] font-semibold uppercase tracking-[0.26em] text-cw-violet">A movement for grieving parents &amp; families</div>
-				<h1 class="m-0 font-lora text-[clamp(38px,6vw,62px)] font-medium leading-[1.13] tracking-[-0.015em] text-cw-ink">You are not alone in this.<br/>You never were.</h1>
-				<p class="mx-auto mt-6 max-w-[600px] text-[clamp(17px,2.2vw,21px)] leading-[1.6] text-cw-slate">For every parent and family whose life has been changed by the loss of a baby or child — we are here, and we understand.</p>
-				<div class="mt-[34px] flex flex-wrap justify-center gap-4">
+				<div class="mb-[22px] text-[13px] font-semibold uppercase tracking-[0.26em] text-cw-violet short:mb-2">A movement for grieving parents &amp; families</div>
+				<h1 class="m-0 font-lora text-[clamp(38px,6vw,62px)] font-medium leading-[1.13] tracking-[-0.015em] text-cw-ink short:text-[26px] short:leading-[1.18]">You are not alone in this.<br/>You never were.</h1>
+				<p class="mx-auto mt-6 max-w-[600px] text-[clamp(17px,2.2vw,21px)] leading-[1.6] text-cw-slate short:mt-3 short:text-[14px] short:leading-snug">For every parent and family whose life has been changed by the loss of a baby or child — we are here, and we understand.</p>
+				<div class="mt-[34px] flex flex-wrap justify-center gap-4 short:mt-5">
 					@cwBtnPrimary("/podcast", "Listen when you're ready")
 					@cwBtnOutline("/community", "Find others who understand")
 				</div>
-				<div class="mt-10 text-[13.5px] text-cw-muted">The names above belong to children who are loved and remembered.</div>
+				<!-- Caption is hidden on short viewports where the names field is
+				     also hidden, so it never refers to names that aren't shown. -->
+				<div class="mt-10 text-[13.5px] text-cw-muted short:hidden">The names above belong to children who are loved and remembered.</div>
 			</div>
 		</section>
 
@@ -70,10 +72,10 @@ templ homeContent() {
 				<h2 class="m-0 mb-3 text-center font-lora text-[clamp(28px,4vw,40px)] font-medium tracking-[-0.01em] text-cw-ink">Come in, whenever you're ready</h2>
 				<p class="mx-auto mb-14 max-w-[560px] text-center text-[18px] text-cw-violet">There's no right way and no right order. These are just gentle doors — open the one that feels possible today.</p>
 				<div class="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-cw-line bg-cw-line sm:grid-cols-2">
-					@cwPathway("/podcast", "The podcast", "Honest conversations about loss and hope — for the days when all you can manage is a pair of headphones.", "Listen when you're ready")
-					@cwPathway("/community", "The community", "A free, gentle space with parents who speak your language — because they have walked it too.", "Find others who understand")
-					@cwPathway("/resources", "Resources", "Free guides and journaling prompts — and something gentle to hand the people who want to help.", "Take what you need")
-					@cwPathway("/events", "Events", "Retreats and gatherings, in person and online, held with care and no expectations.", "Come be together")
+					@cwPathway("/podcast", "The podcast", "Honest conversations about loss and hope — for the days when all you can manage is a pair of headphones.", "Listen when you're ready", true)
+					@cwPathway("/community", "The community", "A free, gentle space with parents who speak your language — because they have walked it too.", "Find others who understand", true)
+					@cwPathway("/resources", "Resources", "Free guides and journaling prompts — and something gentle to hand the people who want to help.", "Take what you need", false)
+					@cwPathway("/events", "Events", "Retreats and gatherings, in person and online, held with care and no expectations.", "Come be together", false)
 				</div>
 			</div>
 		</section>
@@ -95,10 +97,23 @@ templ homeContent() {
 	</div>
 }
 
-// cwPathway is one "gentle door" tile in the home pathways grid.
-templ cwPathway(href, title, desc, cta string) {
-	<a href={ templ.SafeURL(href) } class="group flex flex-col gap-3 bg-cw-card p-9 text-left transition hover:bg-[#faf5ec]">
-		<div class="font-lora text-[24px] text-cw-ink">{ title }</div>
+// cwPathway is one "gentle door" tile in the home pathways grid. `featured`
+// tiles (the podcast + community — the same two the hero CTAs point to) carry
+// more weight per the "size things by importance" brand principle: a candle-gold
+// accent, a larger serif title, and more room on sm+.
+templ cwPathway(href, title, desc, cta string, featured bool) {
+	<a
+		href={ templ.SafeURL(href) }
+		class={ "group flex flex-col gap-3 bg-cw-card text-left transition hover:bg-cw-card-hover",
+			templ.KV("p-9", !featured),
+			templ.KV("p-9 sm:p-11", featured) }
+	>
+		if featured {
+			<div class="mb-1 h-[3px] w-9 rounded-full bg-cw-glow"></div>
+		}
+		<div class={ "font-lora text-cw-ink",
+			templ.KV("text-[24px]", !featured),
+			templ.KV("text-[26px] sm:text-[30px]", featured) }>{ title }</div>
 		<div class="text-[16px] leading-[1.6] text-cw-violet">{ desc }</div>
 		<div class="mt-1 text-[14.5px] font-semibold text-cw-gold-deep transition group-hover:translate-x-0.5">{ cta } &rarr;</div>
 	</a>
