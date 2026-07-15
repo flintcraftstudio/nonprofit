@@ -33,10 +33,34 @@ module.exports = {
           border:  "rgba(245,239,230,0.07)",
           border2: "rgba(245,239,230,0.13)",
         },
+
+        // "Carried With Us" — the public nonprofit palette. Warm cream light
+        // theme lifted by a dawn of muted violet, plum ink, and candle gold.
+        // Distinct from the ff-* (Flint & Ember) admin theme on purpose.
+        cw: {
+          bg:          "#f4efe5", // page cream
+          card:        "#f7f2e9", // card / raised surface
+          sand:        "#efe7d8", // deeper cream (section gradients)
+          ink:         "#2c2b3f", // primary headings / plum-black text
+          night:       "#24243a", // footer + darkest sections
+          violet:      "#55578a", // secondary text + primary button
+          "violet-lo": "#8a6f8f", // muted violet
+          slate:       "#4a4960", // body copy on light
+          gold:        "#b98a3e", // links
+          "gold-deep": "#8f6a2c", // link hover / accent text
+          glow:        "#e4be83", // candle gold — donate + accents
+          terracotta:  "#c27b64", // eyebrow accent
+          muted:       "#8a7d78", // small muted labels
+          tan:         "#c8b9a3", // warm button borders
+          line:        "rgba(85,87,138,0.12)", // violet hairlines
+        },
       },
       fontFamily: {
         display: ['"Cormorant Garamond"', ...defaultTheme.fontFamily.serif],
         body:    ['"DM Sans"', ...defaultTheme.fontFamily.sans],
+        // Public "Carried With Us" typefaces
+        lora:    ['"Lora"', "Georgia", "serif"],
+        sans3:   ['"Source Sans 3"', "system-ui", "sans-serif"],
       },
     },
   },

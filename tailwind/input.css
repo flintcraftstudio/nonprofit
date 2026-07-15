@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -8,5 +9,134 @@
   ::selection {
     background: rgba(219, 123, 52, 0.32);
     color: #f5efe6;
+  }
+}
+
+/* Alpine.js: hide elements until Alpine initializes to avoid a flash. */
+[x-cloak] {
+  display: none !important;
+}
+
+/* ---------------------------------------------------------------------------
+   "Carried With Us" public site — the scroll-aware fixed nav.
+   Color is driven by a single state class and inherited by every link, so the
+   nav melts into the dawn hero at the top of the home page and settles into a
+   solid cream bar once scrolled or on any interior page.
+--------------------------------------------------------------------------- */
+@layer components {
+  .cw-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    transition: background 0.35s ease, padding 0.35s ease, color 0.35s ease,
+      border-color 0.35s ease;
+  }
+  .cw-nav a,
+  .cw-nav button {
+    color: inherit;
+  }
+  .cw-nav--hero {
+    background: transparent;
+    color: #f4efe5;
+    border-bottom: 1px solid transparent;
+    padding-top: 1.35rem;
+    padding-bottom: 1.35rem;
+  }
+  .cw-nav--solid {
+    background: rgba(244, 239, 229, 0.92);
+    -webkit-backdrop-filter: saturate(150%) blur(10px);
+    backdrop-filter: saturate(150%) blur(10px);
+    color: #2c2b3f;
+    border-bottom: 1px solid rgba(85, 87, 138, 0.12);
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion — the dawn hero. A slow sunrise, names that glow like candlelight,
+   and a gentle rise for copy. All silenced under prefers-reduced-motion.
+--------------------------------------------------------------------------- */
+@keyframes cwSunrise {
+  from {
+    background-position: center 0%;
+  }
+  to {
+    background-position: center 68%;
+  }
+}
+@keyframes cwCandleGlow {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  16% {
+    opacity: 0.82;
+  }
+  50% {
+    opacity: 0.92;
+    text-shadow: 0 0 20px rgba(233, 197, 143, 0.6);
+  }
+  82% {
+    opacity: 0.45;
+    text-shadow: 0 0 10px rgba(233, 197, 143, 0.3);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-48px);
+  }
+}
+@keyframes cwPageFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes cwSoftRise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cw-hero {
+  background-size: 100% 148%;
+  background-position: center 68%;
+  animation: cwSunrise 3.6s cubic-bezier(0.33, 0, 0.22, 1) 0.2s both;
+}
+.cw-page-fade {
+  animation: cwPageFade 0.6s ease both;
+}
+.cw-soft-rise {
+  animation: cwSoftRise 1.6s ease 2.5s both;
+}
+.cw-name {
+  animation: cwCandleGlow 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cw-hero,
+  .cw-page-fade,
+  .cw-soft-rise,
+  .cw-name {
+    animation: none !important;
+  }
+  .cw-name {
+    opacity: 0.62 !important;
+    transform: none !important;
+  }
+  .cw-soft-rise {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

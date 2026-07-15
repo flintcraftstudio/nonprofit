@@ -13,14 +13,14 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/firefly-software-mt/advanced-template/internal/config"
-	"github.com/firefly-software-mt/advanced-template/internal/handler"
-	"github.com/firefly-software-mt/advanced-template/internal/mail"
-	"github.com/firefly-software-mt/advanced-template/internal/middleware"
-	"github.com/firefly-software-mt/advanced-template/internal/session"
-	"github.com/firefly-software-mt/advanced-template/internal/store"
-	"github.com/firefly-software-mt/advanced-template/internal/view"
-	"github.com/firefly-software-mt/advanced-template/migrations"
+	"github.com/flintcraftstudio/nonprofit/internal/config"
+	"github.com/flintcraftstudio/nonprofit/internal/handler"
+	"github.com/flintcraftstudio/nonprofit/internal/mail"
+	"github.com/flintcraftstudio/nonprofit/internal/middleware"
+	"github.com/flintcraftstudio/nonprofit/internal/session"
+	"github.com/flintcraftstudio/nonprofit/internal/store"
+	"github.com/flintcraftstudio/nonprofit/internal/view"
+	"github.com/flintcraftstudio/nonprofit/migrations"
 
 	"github.com/pressly/goose/v3"
 	_ "modernc.org/sqlite"
@@ -117,8 +117,16 @@ func main() {
 	// Static files
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 
-	// Pages
+	// Public "Carried With Us" site
 	mux.Handle("GET /", handler.Home())
+	mux.Handle("GET /about", handler.About())
+	mux.Handle("GET /podcast", handler.Podcast())
+	mux.Handle("GET /community", handler.Community())
+	mux.Handle("GET /resources", handler.Resources())
+	mux.Handle("GET /events", handler.Events())
+	mux.Handle("GET /shop", handler.Shop())
+	mux.Handle("GET /coaching", handler.Coaching())
+	mux.Handle("GET /donate", handler.Donate())
 	mux.Handle("GET /contact", handler.Contact())
 	mux.Handle("POST /contact", handler.ContactSubmit(mailer, cfg.TurnstileSecretKey))
 

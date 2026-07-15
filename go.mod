@@ -1,4 +1,4 @@
-module github.com/firefly-software-mt/advanced-template
+module github.com/flintcraftstudio/nonprofit
 
 go 1.25.8
 

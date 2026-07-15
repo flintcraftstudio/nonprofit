@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:#f4efe5}
+  a{color:#B98A3E;text-decoration:none}
+  a:hover{color:#8f6a2c}
+  button{font-family:inherit}
+  :focus-visible{outline:2.5px solid #55578a;outline-offset:3px;border-radius:3px}
+  @keyframes candleGlowDark{
+    0%{opacity:0;transform:translateY(16px)}
+    16%{opacity:.82}
+    50%{opacity:.92;text-shadow:0 0 20px rgba(233,197,143,.6)}
+    82%{opacity:.45;text-shadow:0 0 10px rgba(233,197,143,.3)}
+    100%{opacity:0;transform:translateY(-48px)}
+  }
+  @keyframes sunrise{
+    from{background-position:center 0%}
+    to{background-position:center 68%}
+  }
+  @keyframes candleGlowLight{
+    0%{opacity:.32;color:#c3b8a5}
+    50%{opacity:1;color:#B98A3E;text-shadow:0 0 12px rgba(228,190,131,.5)}
+    100%{opacity:.32;color:#c3b8a5}
+  }
+  @keyframes pageFade{ from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes softRise{ from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important}
+    .gname{opacity:.62 !important;transform:none !important}
+  }
+</style>
+</helmet>
+<div style="font-family:'Source Sans 3',system-ui,sans-serif;color:#2c2b3f;background:#f4efe5;min-height:100vh;overflow-x:hidden">
+
+  <!-- ======================= NAV ======================= -->
+  <nav style="{{ navBar }}">
+    <button onClick="{{ nav.home }}" style="background:none;border:none;margin:0;padding:0;cursor:pointer;font-family:'Lora',Georgia,serif;font-size:21px;letter-spacing:.01em;white-space:nowrap;color:{{ wordmarkColor }}">Carried With Us</button>
+    <div style="display:flex;align-items:center;gap:20px">
+      <button onClick="{{ nav.about }}" style="{{ navLinks.about }}">About</button>
+      <button onClick="{{ nav.podcast }}" style="{{ navLinks.podcast }}">Podcast</button>
+      <button onClick="{{ nav.community }}" style="{{ navLinks.community }}">Community</button>
+      <button onClick="{{ nav.resources }}" style="{{ navLinks.resources }}">Resources</button>
+      <button onClick="{{ nav.events }}" style="{{ navLinks.events }}">Events</button>
+      <button onClick="{{ nav.shop }}" style="{{ navLinks.shop }}">Shop</button>
+      <button onClick="{{ nav.coaching }}" style="{{ navLinks.coaching }}">Coaching</button>
+      <button onClick="{{ nav.contact }}" style="{{ navLinks.contact }}">Contact</button>
+      <button onClick="{{ nav.donate }}" style="{{ donateBtnStyle }}">Donate</button>
+    </div>
+  </nav>
+
+  <!-- ======================= HOME ======================= -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <div style="animation:pageFade .6s ease both">
+
+    <!-- hero -->
+    <section style="min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:13vh 24px 7vh;background:linear-gradient(180deg,#1c1b2d 0%,#201f33 22%,#322f4c 33%,#4a4463 43%,#6a6183 48%,#b5927f 51%,#e6c08a 56%,#f2e2c8 61%,#f4efe5 68%,#f4efe5 100%);background-size:100% 148%;background-position:center 68%;animation:sunrise 3.6s cubic-bezier(.33,0,.22,1) .2s both">
+      <!-- glowing names field -->
+      <div style="position:relative;z-index:2;width:100%;max-width:1040px;height:clamp(160px,26vh,280px);margin:0 auto;font-family:'Lora',Georgia,serif;font-style:italic;color:#f6ead0;pointer-events:none">
+        <span class="gname" style="position:absolute;left:11%;top:6%;font-size:22px;animation:candleGlowDark 7.5s ease-in-out infinite;animation-delay:0s">Ellie</span>
+        <span class="gname" style="position:absolute;left:27%;top:34%;font-size:19px;animation:candleGlowDark 8.5s ease-in-out infinite;animation-delay:1.3s">Noah</span>
+        <span class="gname" style="position:absolute;left:41%;top:12%;font-size:26px;animation:candleGlowDark 7s ease-in-out infinite;animation-delay:2.2s">Grace</span>
+        <span class="gname" style="position:absolute;left:57%;top:40%;font-size:20px;animation:candleGlowDark 9s ease-in-out infinite;animation-delay:.6s">Amara</span>
+        <span class="gname" style="position:absolute;left:72%;top:9%;font-size:23px;animation:candleGlowDark 8s ease-in-out infinite;animation-delay:3s">Oliver</span>
+        <span class="gname" style="position:absolute;left:86%;top:36%;font-size:18px;animation:candleGlowDark 7.5s ease-in-out infinite;animation-delay:1.8s">Mia</span>
+        <span class="gname" style="position:absolute;left:17%;top:62%;font-size:20px;animation:candleGlowDark 8.5s ease-in-out infinite;animation-delay:2.6s">Leo</span>
+        <span class="gname" style="position:absolute;left:33%;top:74%;font-size:24px;animation:candleGlowDark 7s ease-in-out infinite;animation-delay:.9s">Ruth</span>
+        <span class="gname" style="position:absolute;left:49%;top:64%;font-size:19px;animation:candleGlowDark 9s ease-in-out infinite;animation-delay:3.4s">Theo</span>
+        <span class="gname" style="position:absolute;left:64%;top:76%;font-size:22px;animation:candleGlowDark 8s ease-in-out infinite;animation-delay:1.5s">June</span>
+        <span class="gname" style="position:absolute;left:79%;top:63%;font-size:20px;animation:candleGlowDark 7.5s ease-in-out infinite;animation-delay:2.3s">Isaac</span>
+        <span class="gname" style="position:absolute;left:7%;top:38%;font-size:18px;animation:candleGlowDark 8.5s ease-in-out infinite;animation-delay:3.1s">Hazel</span>
+        <span class="gname" style="position:absolute;left:90%;top:60%;font-size:19px;animation:candleGlowDark 7s ease-in-out infinite;animation-delay:.4s">Nora</span>
+        <span class="gname" style="position:absolute;left:46%;top:90%;font-size:21px;animation:candleGlowDark 9s ease-in-out infinite;animation-delay:2s">Clara</span>
+      </div>
+      <!-- headline -->
+      <div style="position:relative;z-index:2;text-align:center;max-width:820px;margin:0 auto;padding:0 20px;animation:softRise 1.6s ease 2.5s both">
+        <div style="font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:#3a3252;margin-bottom:22px;font-weight:600">A movement for grieving parents &amp; families</div>
+        <h1 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:clamp(38px,6vw,62px);line-height:1.13;color:#2c2b3f;margin:0;letter-spacing:-.015em">You are not alone in this.<br>You never were.</h1>
+        <p style="font-size:clamp(17px,2.2vw,21px);line-height:1.6;color:#55578a;max-width:600px;margin:24px auto 0">For every parent and family whose life has been changed by the loss of a baby or child — we are here, and we understand.</p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:34px">
+          <button onClick="{{ nav.podcast }}" style="background:#55578a;color:#f4efe5;font-size:15.5px;font-weight:600;padding:14px 26px;border:none;border-radius:999px;cursor:pointer;box-shadow:0 12px 26px -12px rgba(85,87,138,.65)">Listen when you're ready</button>
+          <button onClick="{{ nav.community }}" style="background:rgba(244,239,229,.5);border:1px solid #c8b9a3;color:#2c2b3f;font-size:15.5px;font-weight:600;padding:14px 26px;border-radius:999px;cursor:pointer">Find others who understand</button>
+        </div>
+        <div style="margin-top:40px;font-size:13.5px;color:#8a7d78">The names above belong to children who are loved and remembered.</div>
+      </div>
+    </section>
+
+    <!-- mission / story -->
+    <section style="background:#f4efe5;padding:clamp(70px,11vw,130px) 24px">
+      <div style="max-width:760px;margin:0 auto;text-align:center">
+        <div style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:26px">Why we're here</div>
+        <p style="font-family:'Lora',Georgia,serif;font-size:clamp(22px,3vw,29px);line-height:1.5;color:#2c2b3f;margin:0 0 28px;font-weight:400">We started Carried With Us because we have lived this. We are two mothers who know what it is to leave a hospital with empty arms — to plan a goodbye instead of a nursery, and to wonder how the world keeps turning.</p>
+        <p style="font-size:18px;line-height:1.75;color:#4a4960;max-width:640px;margin:0 auto">For a long time, we each believed we were the only one. We weren't — and neither are you. This is the community we needed and couldn't find: a place where your child is remembered by name, where your grief is never too much, and where hope is allowed to sit quietly beside the sorrow. However long it has been, and however today is going, there is room for you here.</p>
+        <button onClick="{{ nav.about }}" style="margin-top:34px;background:none;border:1px solid #c8b9a3;color:#2c2b3f;font-size:15px;font-weight:600;padding:12px 24px;border-radius:999px;cursor:pointer">Read our story</button>
+      </div>
+    </section>
+
+    <!-- pathways -->
+    <section style="background:linear-gradient(180deg,#f4efe5,#efe7d8);padding:clamp(70px,10vw,120px) 24px;border-top:1px solid rgba(85,87,138,.1)">
+      <div style="max-width:1080px;margin:0 auto">
+        <h2 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:clamp(28px,4vw,40px);color:#2c2b3f;margin:0 0 12px;text-align:center;letter-spacing:-.01em">Come in, whenever you're ready</h2>
+        <p style="text-align:center;color:#55578a;font-size:18px;margin:0 auto 56px;max-width:560px">There's no right way and no right order. These are just gentle doors — open the one that feels possible today.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:rgba(85,87,138,.12);border:1px solid rgba(85,87,138,.12);border-radius:16px;overflow:hidden">
+          <button onClick="{{ nav.podcast }}" style="text-align:left;background:#f7f2e9;border:none;cursor:pointer;padding:40px 36px;display:flex;flex-direction:column;gap:12px">
+            <div style="font-family:'Lora',Georgia,serif;font-size:24px;color:#2c2b3f">Listen when you're ready</div>
+            <div style="color:#55578a;font-size:16px;line-height:1.6">Honest conversations about loss and hope — for the days when all you can manage is a pair of headphones.</div>
+            <div style="color:#8f6a2c;font-weight:600;font-size:14.5px;margin-top:4px">The podcast →</div>
+          </button>
+          <button onClick="{{ nav.community }}" style="text-align:left;background:#f7f2e9;border:none;cursor:pointer;padding:40px 36px;display:flex;flex-direction:column;gap:12px">
+            <div style="font-family:'Lora',Georgia,serif;font-size:24px;color:#2c2b3f">Find others who understand</div>
+            <div style="color:#55578a;font-size:16px;line-height:1.6">A free, gentle space with parents who speak your language — because they have walked it too.</div>
+            <div style="color:#8f6a2c;font-weight:600;font-size:14.5px;margin-top:4px">The community →</div>
+          </button>
+          <button onClick="{{ nav.resources }}" style="text-align:left;background:#f7f2e9;border:none;cursor:pointer;padding:40px 36px;display:flex;flex-direction:column;gap:12px">
+            <div style="font-family:'Lora',Georgia,serif;font-size:24px;color:#2c2b3f">Take what you need</div>
+            <div style="color:#55578a;font-size:16px;line-height:1.6">Free guides and journaling prompts — and something gentle to hand the people who want to help.</div>
+            <div style="color:#8f6a2c;font-weight:600;font-size:14.5px;margin-top:4px">Resources →</div>
+          </button>
+          <button onClick="{{ nav.events }}" style="text-align:left;background:#f7f2e9;border:none;cursor:pointer;padding:40px 36px;display:flex;flex-direction:column;gap:12px">
+            <div style="font-family:'Lora',Georgia,serif;font-size:24px;color:#2c2b3f">Come be together</div>
+            <div style="color:#55578a;font-size:16px;line-height:1.6">Retreats and gatherings, in person and online, held with care and no expectations.</div>
+            <div style="color:#8f6a2c;font-weight:600;font-size:14.5px;margin-top:4px">Events →</div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- donation invitation -->
+    <section style="background:#2c2b3f;padding:clamp(70px,10vw,120px) 24px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(228,190,131,.22),transparent 65%);pointer-events:none"></div>
+      <div style="max-width:640px;margin:0 auto;text-align:center;position:relative">
+        <h2 style="font-family:'Lora',Georgia,serif;font-weight:400;font-size:clamp(26px,4vw,38px);color:#f4efe5;margin:0 0 20px;line-height:1.3">If you feel called to carry this mission with us</h2>
+        <p style="color:rgba(244,239,229,.75);font-size:18px;line-height:1.7;margin:0 0 34px">Everything here is offered freely to families in their hardest season. Gifts from people like you are what keep it that way.</p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+          <button onClick="{{ nav.donate }}" style="background:#e4be83;color:#2c2b3f;font-size:15.5px;font-weight:700;padding:14px 30px;border:none;border-radius:999px;cursor:pointer">Support the mission</button>
+          <button onClick="{{ goDonateMonthly }}" style="background:none;color:#f4efe5;font-size:15.5px;font-weight:600;padding:14px 24px;border:1px solid rgba(244,239,229,.4);border-radius:999px;cursor:pointer">Give monthly</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  </sc-if>
+
+  <!-- ======================= ABOUT ======================= -->
+  <sc-if value="{{ isAbout }}">
+  <div style="animation:pageFade .6s ease both;padding-top:78px">
+    <section style="max-width:720px;margin:0 auto;padding:clamp(50px,8vw,90px) 24px 40px;text-align:center">
+      <div style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:22px">Our story</div>
+      <h1 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:clamp(34px,5vw,52px);line-height:1.15;color:#2c2b3f;margin:0;letter-spacing:-.015em">Before we were anything else, we were two mothers missing our children.</h1>
+      <p style="font-size:19px;line-height:1.7;color:#55578a;max-width:560px;margin:26px auto 0">Carried With Us was not built in a boardroom. It was built on kitchen floors, in the small hours, out of the thing we each went looking for and couldn't find.</p>
+    </section>
+
+    <!-- founder Sarah -->
+    <section style="max-width:1000px;margin:0 auto;padding:60px 24px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:56px;align-items:center">
+      <div style="height:420px;border-radius:14px;overflow:hidden;position:relative;background:linear-gradient(150deg,#f0d9c4,#e7bfa0 45%,#d99f8f 100%)">
+        <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 12px)"></div>
+        <div style="position:absolute;left:14px;bottom:12px;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:rgba(44,43,63,.6);background:rgba(244,239,229,.7);padding:5px 9px;border-radius:5px">portrait — Sarah, golden hour</div>
+      </div>
+      <div>
+        <h2 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:30px;color:#2c2b3f;margin:0 0 6px">Sarah</h2>
+        <div style="font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#8a7d63;font-weight:600;margin-bottom:22px">Co-founder · mother to Grace</div>
+        <p style="font-size:17px;line-height:1.75;color:#4a4960;margin:0 0 18px">I lost my daughter, Grace, three days after she was born. For months, I couldn't say her name out loud without the whole room going quiet.</p>
+        <p style="font-size:17px;line-height:1.75;color:#4a4960;margin:0 0 18px">What carried me wasn't advice. It was the friend who sat with me on the kitchen floor and didn't try to fix anything — who just stayed. That is the feeling we've tried to build into everything here.</p>
+        <p style="font-size:17px;line-height:1.75;color:#4a4960;margin:0">Carried With Us is the place I went looking for at 2am and couldn't find. So we made it.</p>
+      </div>
+    </section>
+
+    <!-- pull quote -->
+    <section style="background:linear-gradient(180deg,#efe7d8,#f4efe5);padding:clamp(60px,9vw,100px) 24px;margin:20px 0;border-top:1px solid rgba(85,87,138,.1);border-bottom:1px solid rgba(85,87,138,.1)">
+      <blockquote style="max-width:820px;margin:0 auto;text-align:center;font-family:'Lora',Georgia,serif;font-style:italic;font-weight:400;font-size:clamp(24px,3.6vw,36px);line-height:1.45;color:#2c2b3f">"We couldn't find the place we needed. So we built it — for you, and for the children we carry with us."</blockquote>
+    </section>
+
+    <!-- founder Emily -->
+    <section style="max-width:1000px;margin:0 auto;padding:60px 24px;display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center">
+      <div style="order:2">
+        <h2 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:30px;color:#2c2b3f;margin:0 0 6px">Emily</h2>
+        <div style="font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#8a7d63;font-weight:600;margin-bottom:22px">Co-founder · mother to Theo</div>
+        <p style="font-size:17px;line-height:1.75;color:#4a4960;margin:0 0 18px">I'm Emily. My son, Theo, was stillborn at thirty-nine weeks. We had a name, a nursery, a whole life imagined. And then we came home to a silent house.</p>
+        <p style="font-size:17px;line-height:1.75;color:#4a4960;margin:0 0 18px">For a long time I thought grief was something you were supposed to get over. I've learned it's something you learn to carry — and that it's lighter when someone helps you carry it.</p>
+        <p style="font-size:17px;line-height:1.75;color:#4a4960;margin:0">Sarah and I met in the worst year of our lives. This is what we built out of it, so no one else has to look as hard as we did.</p>
+      </div>
+      <div style="order:1;height:420px;border-radius:14px;overflow:hidden;position:relative;background:linear-gradient(150deg,#e9c9b6,#c98f92 50%,#7d6c82 100%)">
+        <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 12px)"></div>
+        <div style="position:absolute;left:14px;bottom:12px;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:rgba(44,43,63,.6);background:rgba(244,239,229,.7);padding:5px 9px;border-radius:5px">portrait — Emily, golden hour</div>
+      </div>
+    </section>
+
+    <!-- why we exist -->
+    <section style="max-width:720px;margin:0 auto;padding:clamp(60px,9vw,100px) 24px;text-align:center">
+      <div style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:22px">Why we exist</div>
+      <p style="font-family:'Lora',Georgia,serif;font-size:clamp(21px,2.8vw,27px);line-height:1.55;color:#2c2b3f;margin:0 0 24px">The loss of a baby or child is one of the loneliest things a person can live through. It shouldn't also be one of the most invisible.</p>
+      <p style="font-size:18px;line-height:1.75;color:#4a4960;margin:0">So we're building something steady and warm: a podcast, a community, resources, and gatherings — all held together by one belief. That your child mattered. That your grief makes sense. And that hope and heartbreak can share the same room, for as long as you need them to.</p>
+      <button onClick="{{ nav.community }}" style="margin-top:34px;background:#55578a;color:#f4efe5;font-size:15px;font-weight:600;padding:13px 26px;border:none;border-radius:999px;cursor:pointer">Find others who understand</button>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ======================= PODCAST ======================= -->
+  <sc-if value="{{ isPodcast }}">
+  <div style="animation:pageFade .6s ease both;padding-top:78px">
+    <section style="max-width:900px;margin:0 auto;padding:clamp(46px,7vw,82px) 24px 24px;text-align:center">
+      <div style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:20px">The podcast</div>
+      <h1 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:clamp(32px,4.6vw,48px);line-height:1.16;color:#2c2b3f;margin:0;letter-spacing:-.015em">Carried With Us: Conversations on Loss and Hope</h1>
+      <p style="font-size:19px;line-height:1.7;color:#55578a;max-width:600px;margin:22px auto 0">Real conversations between parents who have lived this — about the hard parts, the tender parts, and the slow return of light. New episodes every other week.</p>
+    </section>
+
+    <!-- featured episode -->
+    <section style="max-width:1000px;margin:0 auto;padding:30px 24px">
+      <div style="background:#2c2b3f;border-radius:18px;overflow:hidden;display:grid;grid-template-columns:300px 1fr">
+        <div style="min-height:300px;background:linear-gradient(150deg,#e6c08a,#d99f8f 55%,#7d6c82 100%);position:relative">
+          <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 2px,transparent 2px 12px)"></div>
+          <div style="position:absolute;left:14px;bottom:12px;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:rgba(44,43,63,.7);background:rgba(244,239,229,.72);padding:5px 9px;border-radius:5px">episode art</div>
+        </div>
+        <div style="padding:38px 40px;display:flex;flex-direction:column;justify-content:center">
+          <div style="font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:#e4be83;font-weight:600;margin-bottom:14px">Latest episode · #24</div>
+          <h2 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:28px;color:#f4efe5;margin:0 0 12px">The First Year</h2>
+          <p style="font-size:16px;line-height:1.65;color:rgba(244,239,229,.72);margin:0 0 26px;max-width:460px">On the weight of the first birthday, the first holidays, and the strange, hard work of learning to breathe again.</p>
+          <div style="display:flex;align-items:center;gap:16px">
+            <button onClick="{{ togglePlay }}" style="width:54px;height:54px;border-radius:50%;border:none;background:#e4be83;color:#2c2b3f;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ playIcon }}</button>
+            <div style="flex:1">
+              <div style="height:5px;border-radius:3px;background:rgba(244,239,229,.2);position:relative">
+                <div style="position:absolute;left:0;top:0;bottom:0;width:28%;background:#e4be83;border-radius:3px"></div>
+                <div style="position:absolute;left:28%;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:#f4efe5"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12.5px;color:rgba(244,239,229,.6)">
+                <span>13:04</span><span>47:12</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- platform links -->
+    <section style="max-width:1000px;margin:0 auto;padding:20px 24px 10px">
+      <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center">
+        <a href="#" style="display:flex;align-items:center;gap:8px;border:1px solid rgba(85,87,138,.22);border-radius:999px;padding:11px 22px;color:#2c2b3f;font-weight:600;font-size:14.5px">Apple Podcasts</a>
+        <a href="#" style="display:flex;align-items:center;gap:8px;border:1px solid rgba(85,87,138,.22);border-radius:999px;padding:11px 22px;color:#2c2b3f;font-weight:600;font-size:14.5px">Spotify</a>
+        <a href="#" style="display:flex;align-items:center;gap:8px;border:1px solid rgba(85,87,138,.22);border-radius:999px;padding:11px 22px;color:#2c2b3f;font-weight:600;font-size:14.5px">YouTube</a>
+        <a href="#" style="display:flex;align-items:center;gap:8px;border:1px solid rgba(85,87,138,.22);border-radius:999px;padding:11px 22px;color:#2c2b3f;font-weight:600;font-size:14.5px">RSS</a>
+      </div>
+    </section>
+
+    <!-- episode list -->
+    <section style="max-width:820px;margin:0 auto;padding:40px 24px clamp(60px,9vw,100px)">
+      <h3 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:24px;color:#2c2b3f;margin:0 0 8px">All episodes</h3>
+      <div style="border-top:1px solid rgba(85,87,138,.14)">
+        <sc-for list="{{ episodes }}" as="ep" hint-placeholder-count="6">
+          <button style="width:100%;text-align:left;background:none;border:none;border-bottom:1px solid rgba(85,87,138,.14);cursor:pointer;padding:24px 8px;display:flex;gap:22px;align-items:baseline">
+            <span style="font-family:'Lora',Georgia,serif;font-size:18px;color:#c8956c;flex-shrink:0;width:34px">{{ ep.num }}</span>
+            <span style="flex:1">
+              <span style="display:block;font-family:'Lora',Georgia,serif;font-size:20px;color:#2c2b3f;margin-bottom:5px">{{ ep.title }}</span>
+              <span style="display:block;font-size:15.5px;line-height:1.6;color:#55578a">{{ ep.desc }}</span>
+            </span>
+            <span style="font-size:13.5px;color:#8a7d78;flex-shrink:0">{{ ep.len }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ======================= SHOP ======================= -->
+  <sc-if value="{{ isShop }}">
+  <div style="animation:pageFade .6s ease both;padding-top:78px">
+    <section style="max-width:820px;margin:0 auto;padding:clamp(46px,7vw,82px) 24px 20px;text-align:center">
+      <div style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:20px">The shop</div>
+      <h1 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:clamp(32px,4.6vw,48px);line-height:1.16;color:#2c2b3f;margin:0;letter-spacing:-.015em">Small, meaningful things to hold onto</h1>
+      <p style="font-size:18px;line-height:1.7;color:#55578a;max-width:560px;margin:20px auto 0">Remembrance pieces, comfort apparel, and keepsakes — made with care. Every purchase helps keep this community free for the families who need it.</p>
+    </section>
+
+    <section style="max-width:1140px;margin:0 auto;padding:40px 24px clamp(60px,9vw,100px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:40px 32px">
+        <sc-for list="{{ products }}" as="p" hint-placeholder-count="6">
+          <div style="display:flex;flex-direction:column">
+            <div style="height:300px;border-radius:12px;overflow:hidden;position:relative;background:{{ p.grad }}">
+              <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 12px)"></div>
+              <div style="position:absolute;left:12px;top:12px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#4a4960;background:rgba(244,239,229,.82);padding:4px 10px;border-radius:999px;font-weight:600">{{ p.tag }}</div>
+              <div style="position:absolute;left:12px;bottom:12px;font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:rgba(44,43,63,.62);background:rgba(244,239,229,.7);padding:4px 8px;border-radius:5px">product photo</div>
+            </div>
+            <div style="font-family:'Lora',Georgia,serif;font-size:20px;color:#2c2b3f;margin:18px 0 8px">{{ p.name }}</div>
+            <div style="font-size:15px;line-height:1.6;color:#55578a;flex:1">{{ p.desc }}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px">
+              <span style="font-size:17px;color:#2c2b3f;font-weight:600">{{ p.price }}</span>
+              <span style="font-size:14px;font-weight:600;color:#8f6a2c">Add to bag →</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ======================= COMMUNITY (stub) ======================= -->
+  <sc-if value="{{ isCommunity }}">
+  <div style="animation:pageFade .6s ease both;padding-top:78px">
+    <section style="max-width:680px;margin:0 auto;padding:clamp(70px,12vw,150px) 24px;text-align:center">
+      <div style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:22px">The community</div>
+      <h1 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:clamp(34px,5vw,52px);line-height:1.15;color:#2c2b3f;margin:0;letter-spacing:-.015em">You don't have to do this alone.</h1>
+      <p style="font-size:19px;line-height:1.75;color:#55578a;margin:26px auto 36px;max-width:540px">Our community is a free, private space where parents talk honestly about the days that are heavy and the small moments of light. No pressure, no performance — just people who understand, because they've been here too.</p>
+      <a href="#" style="display:inline-block;background:#55578a;color:#f4efe5;font-size:15.5px;font-weight:600;padding:15px 30px;border-radius:999px">Join the community</a>
+      <div style="margin-top:16px;font-size:14px;color:#8a7d78">Free · a private Facebook group</div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ======================= RESOURCES (stub) ======================= -->
+  <sc-if value="{{ isResources }}">
+  <div style="animation:pageFade .6s ease both;padding-top:78px">
+    <section style="max-width:760px;margin:0 auto;padding:clamp(50px,8vw,90px) 24px 30px;text-align:center">
+      <div style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:20px">Resources</div>
+      <h1 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:clamp(32px,4.6vw,48px);line-height:1.16;color:#2c2b3f;margin:0;letter-spacing:-.015em">Gentle help, free to take</h1>
+      <p style="font-size:18px;line-height:1.7;color:#55578a;max-width:540px;margin:20px auto 0">Guides and prompts we wish someone had handed us. Take what helps, leave the rest — and share them with anyone who's walking alongside you.</p>
+    </section>
+    <section style="max-width:1000px;margin:0 auto;padding:30px 24px clamp(60px,9vw,100px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px">
+        <div style="background:#f7f2e9;border:1px solid rgba(85,87,138,.12);border-radius:14px;padding:30px 26px">
+          <div style="font-family:'Lora',Georgia,serif;font-size:21px;color:#2c2b3f;margin-bottom:10px">A Guide to the First Weeks</div>
+          <div style="font-size:15px;line-height:1.6;color:#55578a;margin-bottom:18px">What to expect, what to say no to, and how to be gentle with yourself.</div>
+          <span style="font-size:14px;font-weight:600;color:#8f6a2c">Free download →</span>
+        </div>
+        <div style="background:#f7f2e9;border:1px solid rgba(85,87,138,.12);border-radius:14px;padding:30px 26px">
+          <div style="font-family:'Lora',Georgia,serif;font-size:21px;color:#2c2b3f;margin-bottom:10px">Journaling Prompts</div>
+          <div style="font-size:15px;line-height:1.6;color:#55578a;margin-bottom:18px">Thirty quiet prompts for the words that are hard to say out loud.</div>
+          <span style="font-size:14px;font-weight:600;color:#8f6a2c">Free download →</span>
+        </div>
+        <div style="background:#f7f2e9;border:1px solid rgba(85,87,138,.12);border-radius:14px;padding:30px 26px">
+          <div style="font-family:'Lora',Georgia,serif;font-size:21px;color:#2c2b3f;margin-bottom:10px">Supporting a Grieving Friend</div>
+          <div style="font-size:15px;line-height:1.6;color:#55578a;margin-bottom:18px">For the people who love you and don't know what to do. Hand them this.</div>
+          <span style="font-size:14px;font-weight:600;color:#8f6a2c">Free download →</span>
+        </div>
+        <div style="background:#f7f2e9;border:1px solid rgba(85,87,138,.12);border-radius:14px;padding:30px 26px">
+          <div style="font-family:'Lora',Georgia,serif;font-size:21px;color:#2c2b3f;margin-bottom:10px">The First-Year Companion</div>
+          <div style="font-size:15px;line-height:1.6;color:#55578a;margin-bottom:18px">A month-by-month companion through birthdays, holidays, and hard dates.</div>
+          <span style="font-size:14px;font-weight:600;color:#8f6a2c">Free download →</span>
+        </div>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ======================= EVENTS (stub) ======================= -->
+  <sc-if value="{{ isEvents }}">
+  <div style="animation:pageFade .6s ease both;padding-top:78px">
+    <section style="max-width:760px;margin:0 auto;padding:clamp(50px,8vw,90px) 24px 30px;text-align:center">
+      <div style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:20px">Events</div>
+      <h1 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:clamp(32px,4.6vw,48px);line-height:1.16;color:#2c2b3f;margin:0;letter-spacing:-.015em">Time set aside, together</h1>
+      <p style="font-size:18px;line-height:1.7;color:#55578a;max-width:540px;margin:20px auto 0">A few times a year we gather — in person and online — to remember, to rest, and to be among people who understand without explanation.</p>
+    </section>
+    <section style="max-width:940px;margin:0 auto;padding:30px 24px clamp(60px,9vw,100px);display:grid;gap:28px">
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:0;border:1px solid rgba(85,87,138,.14);border-radius:16px;overflow:hidden">
+        <div style="min-height:200px;background:linear-gradient(150deg,#f0d9c4,#e7bfa0 50%,#8f7f9e 100%)"></div>
+        <div style="padding:32px 34px">
+          <div style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:10px">Retreat · Oct 17–19, 2026 · Asheville, NC</div>
+          <h2 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:26px;color:#2c2b3f;margin:0 0 10px">First Light Retreat</h2>
+          <p style="font-size:16px;line-height:1.65;color:#55578a;margin:0 0 20px;max-width:520px">A slow weekend in the mountains for bereaved parents — quiet mornings, shared meals, and evenings by the fire. Space is limited and held with care.</p>
+          <button style="background:#55578a;color:#f4efe5;font-size:14.5px;font-weight:600;padding:11px 22px;border:none;border-radius:999px;cursor:pointer">Learn more</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:0;border:1px solid rgba(85,87,138,.14);border-radius:16px;overflow:hidden">
+        <div style="min-height:200px;background:linear-gradient(150deg,#f4e6cf,#e6c08a 55%,#d99f8f 100%)"></div>
+        <div style="padding:32px 34px">
+          <div style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:10px">Conference · March 2027 · Online &amp; in person</div>
+          <h2 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:26px;color:#2c2b3f;margin:0 0 10px">Carried With Us Conference</h2>
+          <p style="font-size:16px;line-height:1.65;color:#55578a;margin:0 0 20px;max-width:520px">A day of honest talks, small workshops, and a shared time of remembrance. Join us in the room or from your own kitchen table.</p>
+          <button style="background:#55578a;color:#f4efe5;font-size:14.5px;font-weight:600;padding:11px 22px;border:none;border-radius:999px;cursor:pointer">Learn more</button>
+        </div>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ======================= COACHING (stub / coming soon) ======================= -->
+  <sc-if value="{{ isCoaching }}">
+  <div style="animation:pageFade .6s ease both;padding-top:78px">
+    <section style="max-width:640px;margin:0 auto;padding:clamp(80px,14vw,170px) 24px;text-align:center">
+      <div style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:22px">Coaching &amp; Programs</div>
+      <h1 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:clamp(34px,5vw,50px);line-height:1.18;color:#2c2b3f;margin:0;letter-spacing:-.015em">Something is coming.</h1>
+      <p style="font-size:18px;line-height:1.75;color:#55578a;margin:26px auto 34px;max-width:520px">We're building one-to-one and small-group support for the seasons when you need more than a podcast episode. It isn't ready yet — but it's being made with the same care as everything else here, and it's coming.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;max-width:440px;margin:0 auto">
+        <input type="email" placeholder="Your email" style="flex:1;min-width:200px;background:#fff;border:1px solid rgba(85,87,138,.25);border-radius:999px;padding:13px 20px;font-size:15px;color:#2c2b3f" />
+        <button style="background:#55578a;color:#f4efe5;font-size:14.5px;font-weight:600;padding:13px 24px;border:none;border-radius:999px;cursor:pointer">Tell me when it's ready</button>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ======================= DONATE (stub) ======================= -->
+  <sc-if value="{{ isDonate }}">
+  <div style="animation:pageFade .6s ease both;padding-top:78px">
+    <section style="max-width:600px;margin:0 auto;padding:clamp(50px,8vw,90px) 24px clamp(60px,9vw,100px)">
+      <div style="text-align:center">
+        <div style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:20px">Give</div>
+        <h1 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:clamp(32px,4.6vw,46px);line-height:1.16;color:#2c2b3f;margin:0;letter-spacing:-.015em">Carry this mission with us</h1>
+        <p style="font-size:18px;line-height:1.7;color:#55578a;margin:20px auto 40px;max-width:480px">Your gift keeps the podcast, the community, and every resource free for families in their hardest season. It also helps us hold retreats for parents who could never otherwise come.</p>
+      </div>
+
+      <div style="background:#fff;border:1px solid rgba(85,87,138,.14);border-radius:18px;padding:32px 30px;box-shadow:0 24px 50px -30px rgba(44,43,63,.3)">
+        <!-- frequency -->
+        <div style="display:flex;background:#f0ead d;background:#efe7d8;border-radius:999px;padding:5px;margin-bottom:26px">
+          <button onClick="{{ setOnce }}" style="{{ onceStyle }}">One time</button>
+          <button onClick="{{ setMonthly }}" style="{{ monthlyStyle }}">Monthly</button>
+        </div>
+        <!-- amounts -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px">
+          <sc-for list="{{ amounts }}" as="a" hint-placeholder-count="4">
+            <button onClick="{{ a.onClick }}" style="{{ a.style }}">{{ a.label }}</button>
+          </sc-for>
+        </div>
+        <button style="width:100%;background:#e4be83;color:#2c2b3f;font-size:16px;font-weight:700;padding:16px;border:none;border-radius:999px;cursor:pointer">{{ giveLabel }}</button>
+        <p style="text-align:center;font-size:13px;color:#8a7d78;margin:16px 0 0;line-height:1.6">A monthly gift of $75 helps a family attend a retreat who couldn't otherwise. Every amount matters, and every amount is welcome.</p>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ======================= CONTACT (stub) ======================= -->
+  <sc-if value="{{ isContact }}">
+  <div style="animation:pageFade .6s ease both;padding-top:78px">
+    <section style="max-width:600px;margin:0 auto;padding:clamp(50px,8vw,90px) 24px clamp(60px,9vw,100px)">
+      <div style="text-align:center">
+        <div style="font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#c27b64;font-weight:600;margin-bottom:20px">Contact</div>
+        <h1 style="font-family:'Lora',Georgia,serif;font-weight:500;font-size:clamp(32px,4.6vw,46px);line-height:1.16;color:#2c2b3f;margin:0;letter-spacing:-.015em">We'd love to hear from you</h1>
+        <p style="font-size:18px;line-height:1.7;color:#55578a;margin:20px auto 38px;max-width:460px">Whether you have a question, a name to remember, or you just need to tell someone how you're doing — we read every message ourselves.</p>
+      </div>
+      <div style="display:grid;gap:18px">
+        <input type="text" placeholder="Your name" style="background:#fff;border:1px solid rgba(85,87,138,.25);border-radius:12px;padding:15px 18px;font-size:15px;color:#2c2b3f" />
+        <input type="email" placeholder="Your email" style="background:#fff;border:1px solid rgba(85,87,138,.25);border-radius:12px;padding:15px 18px;font-size:15px;color:#2c2b3f" />
+        <textarea placeholder="Your message" rows="6" style="background:#fff;border:1px solid rgba(85,87,138,.25);border-radius:12px;padding:15px 18px;font-size:15px;color:#2c2b3f;resize:vertical;font-family:inherit"></textarea>
+        <button style="background:#55578a;color:#f4efe5;font-size:15.5px;font-weight:600;padding:15px;border:none;border-radius:999px;cursor:pointer">Send message</button>
+      </div>
+      <p style="text-align:center;font-size:13.5px;color:#8a7d78;margin:20px 0 0">We're not a call center — we're two people, and we'll get back to you.</p>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ======================= FOOTER (global) ======================= -->
+  <footer style="background:#24243a;color:#f4efe5;padding:clamp(60px,8vw,90px) 24px 40px">
+    <div style="max-width:1080px;margin:0 auto">
+      <p style="font-family:'Lora',Georgia,serif;font-style:italic;font-weight:400;font-size:clamp(22px,3.2vw,30px);line-height:1.45;color:#f4efe5;margin:0 0 48px;max-width:620px">The night was long. The light still came. It will come for you, too — and until it does, we'll sit with you in the dark.</p>
+
+      <div style="display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;align-items:flex-start;border-top:1px solid rgba(244,239,229,.15);padding-top:36px">
+        <div>
+          <div style="font-family:'Lora',Georgia,serif;font-size:20px;color:#f4efe5;margin-bottom:8px">Carried With Us</div>
+          <div style="font-size:14px;color:rgba(244,239,229,.6);max-width:280px;line-height:1.6">A community for parents and families after the loss of a baby or child.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 40px">
+          <button onClick="{{ nav.home }}" style="background:none;border:none;padding:0;cursor:pointer;text-align:left;color:rgba(244,239,229,.8);font-size:14.5px">Home</button>
+          <button onClick="{{ nav.about }}" style="background:none;border:none;padding:0;cursor:pointer;text-align:left;color:rgba(244,239,229,.8);font-size:14.5px">About</button>
+          <button onClick="{{ nav.podcast }}" style="background:none;border:none;padding:0;cursor:pointer;text-align:left;color:rgba(244,239,229,.8);font-size:14.5px">Podcast</button>
+          <button onClick="{{ nav.community }}" style="background:none;border:none;padding:0;cursor:pointer;text-align:left;color:rgba(244,239,229,.8);font-size:14.5px">Community</button>
+          <button onClick="{{ nav.resources }}" style="background:none;border:none;padding:0;cursor:pointer;text-align:left;color:rgba(244,239,229,.8);font-size:14.5px">Resources</button>
+          <button onClick="{{ nav.events }}" style="background:none;border:none;padding:0;cursor:pointer;text-align:left;color:rgba(244,239,229,.8);font-size:14.5px">Events</button>
+          <button onClick="{{ nav.shop }}" style="background:none;border:none;padding:0;cursor:pointer;text-align:left;color:rgba(244,239,229,.8);font-size:14.5px">Shop</button>
+          <button onClick="{{ nav.coaching }}" style="background:none;border:none;padding:0;cursor:pointer;text-align:left;color:rgba(244,239,229,.8);font-size:14.5px">Coaching &amp; Programs</button>
+          <button onClick="{{ nav.donate }}" style="background:none;border:none;padding:0;cursor:pointer;text-align:left;color:rgba(244,239,229,.8);font-size:14.5px">Donate</button>
+          <button onClick="{{ nav.contact }}" style="background:none;border:none;padding:0;cursor:pointer;text-align:left;color:rgba(244,239,229,.8);font-size:14.5px">Contact</button>
+        </div>
+      </div>
+
+      <div style="margin-top:40px;padding:22px 24px;border-radius:12px;background:rgba(244,239,229,.06);border:1px solid rgba(244,239,229,.12)">
+        <div style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#e4be83;font-weight:600;margin-bottom:8px">If tonight is heavy</div>
+        <p style="font-size:15px;line-height:1.7;color:rgba(244,239,229,.82);margin:0;max-width:720px">Some of us arrive here in the rawest part of grief. If you are struggling to stay safe right now, please reach out — in the U.S. you can call or text <strong style="color:#f4efe5">988</strong> for the Suicide &amp; Crisis Lifeline, any hour of any day. You do not have to carry tonight alone.</p>
+      </div>
+
+      <div style="margin-top:36px;font-size:13px;color:rgba(244,239,229,.45)">© 2026 Carried With Us. Made by parents, for parents.</div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;},&quot;startPage&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;home&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;about&quot;,&quot;podcast&quot;,&quot;shop&quot;,&quot;community&quot;,&quot;resources&quot;,&quot;events&quot;,&quot;coaching&quot;,&quot;donate&quot;,&quot;contact&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demo&quot;}}">
+class Component extends DCLogic {
+  state = { page: (this.props && this.props.startPage) || 'home', scrolled: false, giveMonthly: false, giveAmount: 75, playing: false };
+
+  componentDidMount() {
+    this._onScroll = () => {
+      const s = window.scrollY > 60;
+      if (s !== this.state.scrolled) this.setState({ scrolled: s });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+  }
+  componentWillUnmount() {
+    if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+  }
+
+  go(p) {
+    this.setState({ page: p, scrolled: false });
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
+
+  renderVals() {
+    const { page, scrolled, giveMonthly, giveAmount, playing } = this.state;
+    const onHome = page === 'home';
+    const solid = !onHome || scrolled;
+
+    const linkBase = solid ? '#55578a' : 'rgba(244,239,229,.86)';
+    const wordmarkColor = solid ? '#2c2b3f' : '#f4efe5';
+
+    const navBar = {
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      padding: solid ? '14px clamp(20px,4vw,44px)' : '22px clamp(20px,4vw,44px)',
+      background: solid ? 'rgba(244,239,229,.92)' : 'transparent',
+      backdropFilter: solid ? 'saturate(150%) blur(10px)' : 'none',
+      WebkitBackdropFilter: solid ? 'saturate(150%) blur(10px)' : 'none',
+      borderBottom: '1px solid ' + (solid ? 'rgba(85,87,138,.12)' : 'transparent'),
+      transition: 'background .4s ease, padding .4s ease',
+      flexWrap: 'wrap', rowGap: '6px'
+    };
+
+    const mk = (name) => ({
+      background: 'none', border: 'none', margin: 0, padding: '2px 0', cursor: 'pointer',
+      fontSize: '14.5px', whiteSpace: 'nowrap',
+      color: page === name ? (solid ? '#8f6a2c' : '#f4efe5') : linkBase,
+      fontWeight: page === name ? 600 : 400,
+      borderBottom: '1.5px solid ' + (page === name ? (solid ? '#cda35e' : '#e9c58f') : 'transparent')
+    });
+    const navLinks = {
+      about: mk('about'), podcast: mk('podcast'), community: mk('community'),
+      resources: mk('resources'), events: mk('events'), shop: mk('shop'),
+      coaching: mk('coaching'), contact: mk('contact')
+    };
+
+    const donateBtnStyle = {
+      cursor: 'pointer', fontSize: '14.5px', fontWeight: 600, padding: '9px 20px', borderRadius: '999px',
+      border: '1px solid ' + (solid ? '#cda35e' : 'rgba(244,239,229,.5)'),
+      color: page === 'donate' ? (solid ? '#2c2b3f' : '#2c2b3f') : (solid ? '#8f6a2c' : '#f4efe5'),
+      background: page === 'donate' ? (solid ? '#e4be83' : 'rgba(244,239,229,.85)') : 'transparent'
+    };
+
+    const nav = {};
+    ['home','about','podcast','community','resources','events','shop','coaching','donate','contact']
+      .forEach((p) => { nav[p] = () => this.go(p); });
+    const goDonateMonthly = () => { this.setState({ giveMonthly: true }); this.go('donate'); };
+
+    // donate frequency toggle
+    const freqBtn = (active) => ({
+      flex: 1, cursor: 'pointer', border: 'none', borderRadius: '999px', padding: '11px',
+      fontSize: '14.5px', fontWeight: 600,
+      background: active ? '#fff' : 'transparent',
+      color: active ? '#2c2b3f' : '#8a7d78',
+      boxShadow: active ? '0 4px 10px -4px rgba(44,43,63,.25)' : 'none'
+    });
+    const onceStyle = freqBtn(!giveMonthly);
+    const monthlyStyle = freqBtn(giveMonthly);
+
+    // amounts
+    const amt = (v) => ({
+      label: '$' + v,
+      onClick: () => this.setState({ giveAmount: v }),
+      style: {
+        cursor: 'pointer', padding: '15px 6px', borderRadius: '12px', textAlign: 'center',
+        fontSize: '18px', fontFamily: "'Lora',Georgia,serif",
+        border: '1.5px solid ' + (giveAmount === v ? '#c27b64' : 'rgba(85,87,138,.2)'),
+        background: giveAmount === v ? 'rgba(194,123,100,.1)' : '#faf6ef',
+        color: '#2c2b3f'
+      }
+    });
+    const amounts = [amt(35), amt(75), amt(150), amt(300)];
+    const giveLabel = giveMonthly ? ('Give $' + giveAmount + ' monthly') : ('Give $' + giveAmount);
+
+    const episodes = [
+      { num: '23', title: 'When Friends Don\u2019t Know What to Say', desc: 'Why the silence hurts, and how to gently ask for what you need.', len: '39 min' },
+      { num: '22', title: 'Marking Birthdays', desc: 'Small rituals for the days that will always be theirs.', len: '42 min' },
+      { num: '21', title: 'Grieving as a Couple', desc: 'Two people, one loss, and two very different ways of carrying it.', len: '51 min' },
+      { num: '20', title: 'Telling Their Siblings', desc: 'Honest, age-appropriate words for the children who are still here.', len: '44 min' },
+      { num: '19', title: '\u201CHow Many Children Do You Have?\u201D', desc: 'Answering a simple question that never feels simple.', len: '36 min' },
+      { num: '18', title: 'Holidays Without Them', desc: 'Making room for both the empty chair and the joy that remains.', len: '49 min' },
+      { num: '17', title: 'Finding the Others', desc: 'How community changes grief, and why you don\u2019t have to do this alone.', len: '40 min' }
+    ];
+
+    const g = {
+      rose: 'linear-gradient(150deg,#f0d9c4,#e7bfa0 45%,#d99f8f 100%)',
+      violet: 'linear-gradient(150deg,#efdcc2,#b98f88 55%,#7d6c82 100%)',
+      gold: 'linear-gradient(150deg,#f4e6cf,#e6c08a 60%,#d9a86f 100%)',
+      dusk: 'linear-gradient(150deg,#e9c9b6,#c98f92 50%,#7d6c82 100%)'
+    };
+    const products = [
+      { name: 'Remembrance Candle', desc: 'A candle for the nights you want to remember them together.', price: '$32', tag: 'Remembrance', grad: g.gold },
+      { name: 'Birthstone Necklace', desc: 'Their birthstone, close to your heart, wherever you go.', price: '$88', tag: 'Jewelry', grad: g.dusk },
+      { name: '\u201CCarried With Us\u201D Sweatshirt', desc: 'Soft enough for the hard days \u2014 a quiet way to feel held.', price: '$58', tag: 'Apparel', grad: g.rose },
+      { name: 'The Grief & Hope Journal', desc: 'Space for the words that are hard to say out loud.', price: '$26', tag: 'Journals', grad: g.violet },
+      { name: 'Forever Loved Tee', desc: 'Their name matters. So does saying it, out loud and often.', price: '$34', tag: 'Apparel', grad: g.rose },
+      { name: 'Remembrance Ornament', desc: 'A place for them at every gathering, every single year.', price: '$28', tag: 'Remembrance', grad: g.gold },
+      { name: 'First Light Candle Set', desc: 'Three candles \u2014 for the long nights, and the mornings after.', price: '$46', tag: 'Remembrance', grad: g.dusk },
+      { name: 'Name Bracelet', desc: 'Their name, in gold, always with you.', price: '$72', tag: 'Jewelry', grad: g.violet }
+    ];
+
+    return {
+      page,
+      isHome: onHome, isAbout: page === 'about', isPodcast: page === 'podcast', isShop: page === 'shop',
+      isCommunity: page === 'community', isResources: page === 'resources', isEvents: page === 'events',
+      isCoaching: page === 'coaching', isDonate: page === 'donate', isContact: page === 'contact',
+      nav, goDonateMonthly, navBar, navLinks, donateBtnStyle, wordmarkColor,
+      onceStyle, monthlyStyle, amounts, giveLabel,
+      setOnce: () => this.setState({ giveMonthly: false }),
+      setMonthly: () => this.setState({ giveMonthly: true }),
+      playing, playIcon: playing ? '\u2225' : '\u25B6',
+      togglePlay: () => this.setState((s) => ({ playing: !s.playing })),
+      episodes, products
+    };
+  }
+}
+</script>
+</body>
+</html>

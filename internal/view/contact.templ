@@ -1,84 +1,92 @@
 package view
 
+// ContactPage renders the public contact form. The handler reuses the same
+// ContactSubmit pipeline (validation + Turnstile + Postmark) as the template.
 templ ContactPage(errors map[string]string, values map[string]string, success bool) {
-	@Base("Contact", "Get in touch with us.", contactContent(errors, values, success))
+	@SiteBase(
+		"Contact",
+		"Whether you have a question, a name to remember, or you just need to tell someone how you're doing — we read every message ourselves.",
+		"/contact",
+		false,
+		contactContent(errors, values, success),
+	)
 }
 
 templ contactContent(errors map[string]string, values map[string]string, success bool) {
-	<section class="py-24 sm:py-[80px]">
-		<div class="mx-auto max-w-5xl px-6 sm:px-12">
-			@eyebrow("Say hello")
-			<h1 class="mb-10 font-display text-[36px] font-medium tracking-tight text-ff-paper">Contact</h1>
-			<div class="max-w-lg">
-				@ContactForm(errors, values, success)
+	<div class="cw-page-fade">
+		<section class="mx-auto max-w-[600px] px-6 pb-[clamp(60px,9vw,100px)] pt-[clamp(50px,8vw,90px)]">
+			<div class="text-center">
+				@cwEyebrow("Contact")
+				<h1 class="m-0 font-lora text-[clamp(32px,4.6vw,46px)] font-medium leading-[1.16] tracking-[-0.015em] text-cw-ink">We'd love to hear from you</h1>
+				<p class="mx-auto mb-10 mt-5 max-w-[460px] text-[18px] leading-[1.7] text-cw-violet">Whether you have a question, a name to remember, or you just need to tell someone how you're doing — we read every message ourselves.</p>
 			</div>
-		</div>
-	</section>
+			@ContactForm(errors, values, success)
+			<p class="mt-5 text-center text-[13.5px] text-cw-muted">We're not a call center — we're two people, and we'll get back to you.</p>
+		</section>
+	</div>
 }
 
+// ContactForm is the htmx-swapped form body: it re-renders itself with inline
+// errors on failure, or a warm confirmation on success.
 templ ContactForm(errors map[string]string, values map[string]string, success bool) {
-	<form hx-post="/contact" hx-swap="outerHTML" class="space-y-5">
+	<form hx-post="/contact" hx-swap="outerHTML" class="grid gap-[18px]">
 		@CSRFField()
 		if success {
-			<div class="rounded border border-ff-ember-mid bg-ff-panel p-6">
-				<p class="text-[15px] font-normal text-ff-glow">Thanks! We'll be in touch soon.</p>
+			<div class="rounded-2xl border border-cw-line bg-cw-card p-8 text-center">
+				<div class="mb-2 font-lora text-[22px] text-cw-ink">Thank you for reaching out.</div>
+				<p class="m-0 text-[16px] leading-[1.7] text-cw-slate">Your message is with us now. We read every one ourselves, and we'll be in touch soon.</p>
 			</div>
 		} else {
 			if errors["form"] != "" {
-				<div class="rounded border border-red-500/40 bg-red-500/10 p-4">
-					<p class="text-[13px] text-red-400">{ errors["form"] }</p>
+				<div class="rounded-xl border border-cw-terracotta/50 bg-[rgba(194,123,100,0.08)] p-4">
+					<p class="m-0 text-[14px] text-cw-terracotta">{ errors["form"] }</p>
 				</div>
 			}
 			<div>
-				<label for="name" class="mb-1.5 block text-[13px] font-medium text-ff-cream">Name</label>
 				<input
 					type="text"
 					id="name"
 					name="name"
 					value={ values["name"] }
-					class="w-full rounded-sm border border-ff-border2 bg-ff-panel px-4 py-2.5 text-[15px] font-light text-ff-cream placeholder-ff-stone outline-none transition focus:border-[#db7b3473]"
 					placeholder="Your name"
+					class="w-full rounded-xl border border-cw-line bg-white px-[18px] py-[15px] text-[15px] text-cw-ink outline-none transition focus:border-cw-violet"
 				/>
 				if errors["name"] != "" {
-					<p class="mt-1 text-[11px] text-red-400">{ errors["name"] }</p>
+					<p class="mt-1.5 text-[12px] text-cw-terracotta">{ errors["name"] }</p>
 				}
 			</div>
 			<div>
-				<label for="email" class="mb-1.5 block text-[13px] font-medium text-ff-cream">Email</label>
 				<input
 					type="email"
 					id="email"
 					name="email"
 					value={ values["email"] }
-					class="w-full rounded-sm border border-ff-border2 bg-ff-panel px-4 py-2.5 text-[15px] font-light text-ff-cream placeholder-ff-stone outline-none transition focus:border-[#db7b3473]"
-					placeholder="you@example.com"
+					placeholder="Your email"
+					class="w-full rounded-xl border border-cw-line bg-white px-[18px] py-[15px] text-[15px] text-cw-ink outline-none transition focus:border-cw-violet"
 				/>
 				if errors["email"] != "" {
-					<p class="mt-1 text-[11px] text-red-400">{ errors["email"] }</p>
+					<p class="mt-1.5 text-[12px] text-cw-terracotta">{ errors["email"] }</p>
 				}
 			</div>
 			<div>
-				<label for="message" class="mb-1.5 block text-[13px] font-medium text-ff-cream">Message</label>
 				<textarea
 					id="message"
 					name="message"
-					rows="5"
-					class="w-full rounded-sm border border-ff-border2 bg-ff-panel px-4 py-2.5 text-[15px] font-light text-ff-cream placeholder-ff-stone outline-none transition focus:border-[#db7b3473]"
-					placeholder="Tell us about your project..."
+					rows="6"
+					placeholder="Your message"
+					class="w-full resize-y rounded-xl border border-cw-line bg-white px-[18px] py-[15px] text-[15px] text-cw-ink outline-none transition focus:border-cw-violet"
 				>{ values["message"] }</textarea>
 				if errors["message"] != "" {
-					<p class="mt-1 text-[11px] text-red-400">{ errors["message"] }</p>
+					<p class="mt-1.5 text-[12px] text-cw-terracotta">{ errors["message"] }</p>
 				}
 			</div>
 			if TurnstileSiteKey != "" {
-				<div class="cf-turnstile" data-sitekey={ TurnstileSiteKey } data-theme="dark"></div>
+				<div class="cf-turnstile" data-sitekey={ TurnstileSiteKey } data-theme="light"></div>
 			}
 			<button
 				type="submit"
-				class="rounded-sm bg-ff-ember px-[26px] py-[13px] text-[12px] font-medium uppercase tracking-[0.12em] text-[#1a1109] transition hover:bg-ff-ember-hover active:scale-[0.98]"
-			>
-				Send message
-			</button>
+				class="rounded-full bg-cw-violet px-6 py-[15px] text-[15.5px] font-semibold text-cw-bg transition hover:bg-[#494b7a]"
+			>Send message</button>
 		}
 	</form>
 }

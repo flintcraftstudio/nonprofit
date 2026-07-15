@@ -1,0 +1,35 @@
+package view
+
+// EventsPage lists retreats, conferences, and future gatherings.
+templ EventsPage() {
+	@SiteBase(
+		"Events",
+		"A few times a year we gather — in person and online — to remember, to rest, and to be among people who understand without explanation.",
+		"/events",
+		false,
+		eventsContent(),
+	)
+}
+
+templ eventsContent() {
+	<div class="cw-page-fade">
+		<section class="mx-auto max-w-[760px] px-6 pb-8 pt-[clamp(50px,8vw,90px)] text-center">
+			@cwEyebrow("Events")
+			<h1 class="m-0 font-lora text-[clamp(32px,4.6vw,48px)] font-medium leading-[1.16] tracking-[-0.015em] text-cw-ink">Time set aside, together</h1>
+			<p class="mx-auto mt-5 max-w-[540px] text-[18px] leading-[1.7] text-cw-violet">A few times a year we gather — in person and online — to remember, to rest, and to be among people who understand without explanation.</p>
+		</section>
+		<section class="mx-auto grid max-w-[940px] gap-7 px-6 pb-[clamp(60px,9vw,100px)] pt-8">
+			for _, e := range Events {
+				<div class="grid overflow-hidden rounded-2xl border border-cw-line sm:grid-cols-[200px_1fr]">
+					<div class="min-h-[200px]" style={ "background:" + e.Grad }></div>
+					<div class="px-9 py-8">
+						<div class="mb-2.5 text-[13px] font-semibold uppercase tracking-[0.14em] text-cw-terracotta">{ e.Meta }</div>
+						<h2 class="m-0 mb-2.5 font-lora text-[26px] font-medium text-cw-ink">{ e.Title }</h2>
+						<p class="m-0 mb-5 max-w-[520px] text-[16px] leading-[1.65] text-cw-violet">{ e.Desc }</p>
+						<a href="/contact" class="inline-block rounded-full bg-cw-violet px-[22px] py-[11px] text-[14.5px] font-semibold text-cw-bg transition hover:bg-[#494b7a]">Learn more</a>
+					</div>
+				</div>
+			}
+		</section>
+	</div>
+}

@@ -1,0 +1,83 @@
+package view
+
+// PodcastPage lists episodes and links out to every listening platform.
+templ PodcastPage() {
+	@SiteBase(
+		"The podcast",
+		"Carried With Us: Conversations on Loss and Hope — real conversations between parents who have lived this. New episodes every other week.",
+		"/podcast",
+		false,
+		podcastContent(),
+	)
+}
+
+templ podcastContent() {
+	<div class="cw-page-fade">
+		<!-- Intro -->
+		<section class="mx-auto max-w-[900px] px-6 pb-6 pt-[clamp(46px,7vw,82px)] text-center">
+			@cwEyebrow("The podcast")
+			<h1 class="m-0 font-lora text-[clamp(32px,4.6vw,48px)] font-medium leading-[1.16] tracking-[-0.015em] text-cw-ink">Carried With Us: Conversations on Loss and Hope</h1>
+			<p class="mx-auto mt-[22px] max-w-[600px] text-[19px] leading-[1.7] text-cw-violet">Real conversations between parents who have lived this — about the hard parts, the tender parts, and the slow return of light. New episodes every other week.</p>
+		</section>
+
+		<!-- Featured episode -->
+		<section class="mx-auto max-w-[1000px] px-6 py-8">
+			<div class="grid overflow-hidden rounded-[18px] bg-cw-ink md:grid-cols-[300px_1fr]">
+				<div class="min-h-[300px]">
+					@cwPhoto(gradGold, "episode art")
+				</div>
+				<div class="flex flex-col justify-center px-10 py-9">
+					<div class="mb-3.5 text-[12.5px] font-semibold uppercase tracking-[0.18em] text-cw-glow">Latest episode · #24</div>
+					<h2 class="m-0 mb-3 font-lora text-[28px] font-medium text-cw-bg">The First Year</h2>
+					<p class="m-0 mb-[26px] max-w-[460px] text-[16px] leading-[1.65] text-cw-bg/70">On the weight of the first birthday, the first holidays, and the strange, hard work of learning to breathe again.</p>
+					<div class="flex items-center gap-4" x-data="{ playing: false }">
+						<button
+							type="button"
+							@click="playing = !playing"
+							class="flex h-[54px] w-[54px] flex-shrink-0 items-center justify-center rounded-full bg-cw-glow text-[18px] text-cw-ink"
+							:aria-label="playing ? 'Pause' : 'Play'"
+						>
+							<span x-show="!playing">&#9654;</span>
+							<span x-show="playing" x-cloak>&#10073;&#10073;</span>
+						</button>
+						<div class="flex-1">
+							<div class="relative h-[5px] rounded-[3px] bg-white/20">
+								<div class="absolute inset-y-0 left-0 w-[28%] rounded-[3px] bg-cw-glow"></div>
+								<div class="absolute left-[28%] top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cw-bg"></div>
+							</div>
+							<div class="mt-2 flex justify-between text-[12.5px] text-cw-bg/60">
+								<span>13:04</span><span>47:12</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Platform links -->
+		<section class="mx-auto max-w-[1000px] px-6 pb-2.5 pt-5">
+			<div class="flex flex-wrap justify-center gap-3.5">
+				for _, p := range PodcastPlatforms {
+					<a href={ templ.SafeURL(p.Href) } class="rounded-full border border-cw-line px-[22px] py-[11px] text-[14.5px] font-semibold text-cw-ink transition hover:border-cw-tan hover:bg-cw-card">{ p.Name }</a>
+				}
+			</div>
+		</section>
+
+		<!-- Episode list -->
+		<section class="mx-auto max-w-[820px] px-6 pb-[clamp(60px,9vw,100px)] pt-10">
+			<h3 class="m-0 mb-2 font-lora text-[24px] font-medium text-cw-ink">All episodes</h3>
+			<div class="border-t border-cw-line">
+				for _, ep := range Episodes {
+					<a href="#" class="flex items-baseline gap-[22px] border-b border-cw-line px-2 py-6 transition hover:bg-cw-card">
+						<span class="w-[34px] flex-shrink-0 font-lora text-[18px] text-[#c8956c]">{ ep.Num }</span>
+						<span class="flex-1">
+							<span class="mb-1.5 block font-lora text-[20px] text-cw-ink">{ ep.Title }</span>
+							<span class="block text-[15.5px] leading-[1.6] text-cw-violet">{ ep.Desc }</span>
+						</span>
+						<span class="flex-shrink-0 text-[13.5px] text-cw-muted">{ ep.Len }</span>
+					</a>
+				}
+			</div>
+		</section>
+	</div>
+}

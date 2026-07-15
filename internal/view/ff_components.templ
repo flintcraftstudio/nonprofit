@@ -1,0 +1,47 @@
+package view
+
+// Shared Flint & Ember (ff-*) UI atoms used by the internal admin and login
+// pages. These lived in home.templ originally; they were moved here so the
+// public "Carried With Us" home page could be rewritten without disturbing
+// the operator-facing screens that still depend on them.
+
+// eyebrow is the small accented label used above headings on the admin/login
+// screens.
+templ eyebrow(label string) {
+	<div class="mb-6 flex items-center gap-3">
+		<span class="block h-px w-7 bg-ff-ember"></span>
+		<span class="text-[11px] font-medium uppercase tracking-[0.2em] text-ff-ember">{ label }</span>
+	</div>
+}
+
+// capability is one editorial row: a serif index numeral, a title, and a
+// description, separated by a hairline.
+templ capability(index, title, description string) {
+	<div class="flex gap-6 border-b border-ff-border py-7 first:pt-0">
+		<span class="mt-1 font-display text-[28px] italic leading-none text-ff-glow/70">{ index }</span>
+		<div>
+			<h3 class="text-[17px] font-medium text-ff-cream">{ title }</h3>
+			<p class="mt-2 max-w-md text-[14px] font-light leading-relaxed text-ff-ash">{ description }</p>
+		</div>
+	</div>
+}
+
+// primaryLink is the ember call-to-action button (dark ink on warm ember).
+templ primaryLink(href, label string) {
+	<a
+		href={ templ.SafeURL(href) }
+		class="rounded-sm bg-ff-ember px-[26px] py-[13px] text-[12px] font-medium uppercase tracking-[0.12em] text-[#1a1109] transition hover:bg-ff-ember-hover active:scale-[0.98]"
+	>
+		{ label } &rarr;
+	</a>
+}
+
+// ghostLink is the quiet secondary action — text only.
+templ ghostLink(href, label string) {
+	<a
+		href={ templ.SafeURL(href) }
+		class="text-[12px] font-medium uppercase tracking-[0.08em] text-ff-ash transition hover:text-ff-cream"
+	>
+		{ label }
+	</a>
+}

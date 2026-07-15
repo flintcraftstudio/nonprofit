@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/firefly-software-mt/advanced-template/internal/store"
-	"github.com/firefly-software-mt/advanced-template/migrations"
+	"github.com/flintcraftstudio/nonprofit/internal/store"
+	"github.com/flintcraftstudio/nonprofit/migrations"
 
 	"github.com/pressly/goose/v3"
 	_ "modernc.org/sqlite"

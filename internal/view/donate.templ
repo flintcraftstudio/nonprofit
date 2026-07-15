@@ -1,0 +1,75 @@
+package view
+
+import "fmt"
+
+// DonatePage is the giving page: an interactive (client-side) frequency and
+// amount picker. Payment processing is intentionally not wired up in this
+// proof-of-concept.
+templ DonatePage() {
+	@SiteBase(
+		"Give",
+		"Your gift keeps the podcast, the community, and every resource free for families in their hardest season.",
+		"/donate",
+		false,
+		donateContent(),
+	)
+}
+
+templ donateContent() {
+	<div class="cw-page-fade">
+		<section class="mx-auto max-w-[600px] px-6 pb-[clamp(60px,9vw,100px)] pt-[clamp(50px,8vw,90px)]">
+			<div class="text-center">
+				@cwEyebrow("Give")
+				<h1 class="m-0 font-lora text-[clamp(32px,4.6vw,46px)] font-medium leading-[1.16] tracking-[-0.015em] text-cw-ink">Carry this mission with us</h1>
+				<p class="mx-auto mb-10 mt-5 max-w-[480px] text-[18px] leading-[1.7] text-cw-violet">Your gift keeps the podcast, the community, and every resource free for families in their hardest season. It also helps us hold retreats for parents who could never otherwise come.</p>
+			</div>
+
+			<div
+				class="rounded-[18px] border border-cw-line bg-white p-8 shadow-[0_24px_50px_-30px_rgba(44,43,63,0.3)]"
+				x-data="{ monthly: false, amount: 75 }"
+			>
+				<!-- frequency -->
+				<div class="mb-[26px] flex rounded-full bg-cw-sand p-1.5">
+					<button
+						type="button"
+						@click="monthly = false"
+						class="flex-1 rounded-full py-[11px] text-[14.5px] font-semibold transition"
+						:class="!monthly ? 'bg-white text-cw-ink shadow-[0_4px_10px_-4px_rgba(44,43,63,0.25)]' : 'text-cw-muted'"
+					>One time</button>
+					<button
+						type="button"
+						@click="monthly = true"
+						class="flex-1 rounded-full py-[11px] text-[14.5px] font-semibold transition"
+						:class="monthly ? 'bg-white text-cw-ink shadow-[0_4px_10px_-4px_rgba(44,43,63,0.25)]' : 'text-cw-muted'"
+					>Monthly</button>
+				</div>
+				<!-- amounts -->
+				<div class="mb-6 grid grid-cols-4 gap-3">
+					@donateAmount(35)
+					@donateAmount(75)
+					@donateAmount(150)
+					@donateAmount(300)
+				</div>
+				<button
+					type="button"
+					@click="$refs.demo.style.display = 'block'"
+					class="w-full rounded-full bg-cw-glow py-4 text-[16px] font-bold text-cw-ink transition hover:bg-[#d9ad6e]"
+					x-text="monthly ? ('Give $' + amount + ' monthly') : ('Give $' + amount)"
+				>Give $75</button>
+				<p x-ref="demo" style="display:none" class="mt-3 text-center text-[13px] text-cw-terracotta">This is a preview — secure payment isn't connected yet.</p>
+				<p class="m-0 mt-4 text-center text-[13px] leading-[1.6] text-cw-muted">A monthly gift of $75 helps a family attend a retreat who couldn't otherwise. Every amount matters, and every amount is welcome.</p>
+			</div>
+		</section>
+	</div>
+}
+
+// donateAmount is one selectable giving amount. Selection state lives in the
+// parent Alpine scope (`amount`).
+templ donateAmount(value int) {
+	<button
+		type="button"
+		@click={ fmt.Sprintf("amount = %d", value) }
+		class="rounded-xl border-[1.5px] py-[15px] text-center font-lora text-[18px] text-cw-ink transition"
+		:class={ fmt.Sprintf("amount === %d ? 'border-cw-terracotta bg-[rgba(194,123,100,0.1)]' : 'border-cw-line bg-[#faf6ef]'", value) }
+	>${ fmt.Sprint(value) }</button>
+}

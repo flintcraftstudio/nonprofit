@@ -1,0 +1,66 @@
+package view
+
+// AboutPage introduces the two founders and why "Carried With Us" exists.
+templ AboutPage() {
+	@SiteBase(
+		"Our story",
+		"Carried With Us was built by two mothers missing their children — Sarah and Emily — out of the community they went looking for and couldn't find.",
+		"/about",
+		false,
+		aboutContent(),
+	)
+}
+
+templ aboutContent() {
+	<div class="cw-page-fade">
+		<!-- Intro -->
+		<section class="mx-auto max-w-[720px] px-6 pb-10 pt-[clamp(50px,8vw,90px)] text-center">
+			@cwEyebrow("Our story")
+			<h1 class="m-0 font-lora text-[clamp(34px,5vw,52px)] font-medium leading-[1.15] tracking-[-0.015em] text-cw-ink">Before we were anything else, we were two mothers missing our children.</h1>
+			<p class="mx-auto mt-[26px] max-w-[560px] text-[19px] leading-[1.7] text-cw-violet">Carried With Us was not built in a boardroom. It was built on kitchen floors, in the small hours, out of the thing we each went looking for and couldn't find.</p>
+		</section>
+
+		<!-- Founder: Sarah -->
+		<section class="mx-auto grid max-w-[1000px] items-center gap-14 px-6 py-14 md:grid-cols-[0.85fr_1.15fr]">
+			<div class="h-[420px] overflow-hidden rounded-2xl">
+				@cwPhoto(gradRose, "portrait — Sarah, golden hour")
+			</div>
+			<div>
+				<h2 class="m-0 mb-1.5 font-lora text-[30px] font-medium text-cw-ink">Sarah</h2>
+				<div class="mb-[22px] text-[13px] font-semibold uppercase tracking-[0.16em] text-cw-muted">Co-founder · mother to Grace</div>
+				<p class="mb-[18px] text-[17px] leading-[1.75] text-cw-slate">I lost my daughter, Grace, three days after she was born. For months, I couldn't say her name out loud without the whole room going quiet.</p>
+				<p class="mb-[18px] text-[17px] leading-[1.75] text-cw-slate">What carried me wasn't advice. It was the friend who sat with me on the kitchen floor and didn't try to fix anything — who just stayed. That is the feeling we've tried to build into everything here.</p>
+				<p class="m-0 text-[17px] leading-[1.75] text-cw-slate">Carried With Us is the place I went looking for at 2am and couldn't find. So we made it.</p>
+			</div>
+		</section>
+
+		<!-- Pull quote -->
+		<section class="my-5 border-y border-cw-line bg-gradient-to-b from-cw-sand to-cw-bg px-6 py-[clamp(60px,9vw,100px)]">
+			<blockquote class="mx-auto max-w-[820px] text-center font-lora text-[clamp(24px,3.6vw,36px)] font-normal italic leading-[1.45] text-cw-ink">"We couldn't find the place we needed. So we built it — for you, and for the children we carry with us."</blockquote>
+		</section>
+
+		<!-- Founder: Emily -->
+		<section class="mx-auto grid max-w-[1000px] items-center gap-14 px-6 py-14 md:grid-cols-[1.15fr_0.85fr]">
+			<div class="md:order-2 h-[420px] overflow-hidden rounded-2xl">
+				@cwPhoto(gradDusk, "portrait — Emily, golden hour")
+			</div>
+			<div class="md:order-1">
+				<h2 class="m-0 mb-1.5 font-lora text-[30px] font-medium text-cw-ink">Emily</h2>
+				<div class="mb-[22px] text-[13px] font-semibold uppercase tracking-[0.16em] text-cw-muted">Co-founder · mother to Theo</div>
+				<p class="mb-[18px] text-[17px] leading-[1.75] text-cw-slate">I'm Emily. My son, Theo, was stillborn at thirty-nine weeks. We had a name, a nursery, a whole life imagined. And then we came home to a silent house.</p>
+				<p class="mb-[18px] text-[17px] leading-[1.75] text-cw-slate">For a long time I thought grief was something you were supposed to get over. I've learned it's something you learn to carry — and that it's lighter when someone helps you carry it.</p>
+				<p class="m-0 text-[17px] leading-[1.75] text-cw-slate">Sarah and I met in the worst year of our lives. This is what we built out of it, so no one else has to look as hard as we did.</p>
+			</div>
+		</section>
+
+		<!-- Why we exist -->
+		<section class="mx-auto max-w-[720px] px-6 py-[clamp(60px,9vw,100px)] text-center">
+			@cwEyebrow("Why we exist")
+			<p class="m-0 mb-6 font-lora text-[clamp(21px,2.8vw,27px)] leading-[1.55] text-cw-ink">The loss of a baby or child is one of the loneliest things a person can live through. It shouldn't also be one of the most invisible.</p>
+			<p class="m-0 text-[18px] leading-[1.75] text-cw-slate">So we're building something steady and warm: a podcast, a community, resources, and gatherings — all held together by one belief. That your child mattered. That your grief makes sense. And that hope and heartbreak can share the same room, for as long as you need them to.</p>
+			<div class="mt-9">
+				@cwBtnPrimary("/community", "Find others who understand")
+			</div>
+		</section>
+	</div>
+}

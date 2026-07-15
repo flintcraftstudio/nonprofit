@@ -4,8 +4,8 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/firefly-software-mt/advanced-template/internal/session"
-	"github.com/firefly-software-mt/advanced-template/internal/view"
+	"github.com/flintcraftstudio/nonprofit/internal/session"
+	"github.com/flintcraftstudio/nonprofit/internal/view"
 )
 
 // AdminDashboard handles GET /admin. It assumes session.RequireAuth has

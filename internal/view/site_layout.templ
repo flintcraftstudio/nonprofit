@@ -1,0 +1,182 @@
+package view
+
+import "fmt"
+
+// SiteBase is the shell for every public "Carried With Us" page. It is a
+// deliberately separate layout from Base (the Flint & Ember admin shell):
+// a warm cream light theme, Lora + Source Sans typography, a scroll-aware
+// nav, and a footer that carries a crisis-support note. `active` is the
+// current path (used to mark the nav link); `isHome` enables the transparent
+// hero nav and removes the top padding the fixed nav otherwise needs.
+templ SiteBase(title, description, active string, isHome bool, body templ.Component) {
+	<!DOCTYPE html>
+	<html lang="en" class="bg-cw-bg text-cw-ink">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<meta name="description" content={ description }/>
+			<title>{ title } | { SiteName }</title>
+			if GtagID != "" {
+				<script async src={ "https://www.googletagmanager.com/gtag/js?id=" + GtagID }></script>
+				@gtagInit()
+			}
+			if PixelID != "" {
+				@pixelInit()
+				<noscript><img height="1" width="1" style="display:none" src={ "https://www.facebook.com/tr?id=" + PixelID + "&ev=PageView&noscript=1" }/></noscript>
+			}
+			if TurnstileSiteKey != "" {
+				<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+			}
+			<link rel="stylesheet" href="/static/css/site.css"/>
+			<script src="/static/js/htmx.min.js" defer></script>
+			<script src="/static/js/alpine.min.js" defer></script>
+		</head>
+		<body class="min-h-screen overflow-x-hidden bg-cw-bg font-sans3 text-[15px] font-normal text-cw-ink antialiased">
+			@siteNav(active, isHome)
+			<main class={ templ.KV("pt-[70px]", !isHome) }>
+				@body
+			</main>
+			@siteFooter()
+		</body>
+	</html>
+}
+
+// siteNav is the fixed primary navigation. It renders solid on interior pages
+// and transparent-over-hero on the home page, and collapses to a toggle menu
+// under lg.
+templ siteNav(active string, isHome bool) {
+	<nav
+		class={ navInitClass(isHome) }
+		x-data={ navData(isHome) }
+		x-bind:class="(home && top) ? 'cw-nav--hero' : 'cw-nav--solid'"
+		@scroll.window.passive="top = window.scrollY < 60"
+	>
+		<div class="mx-auto flex max-w-6xl items-center justify-between px-5 sm:px-8">
+			<a href="/" class="font-lora text-[21px] tracking-[0.01em] whitespace-nowrap">{ SiteName }</a>
+			<!-- desktop links -->
+			<div class="hidden items-center gap-5 lg:flex">
+				for _, item := range NavItems {
+					@navLink(item.Href, item.Label, active == item.Href)
+				}
+				<a
+					href="/donate"
+					class={ "rounded-full border border-current px-5 py-2 text-[14.5px] font-semibold whitespace-nowrap transition hover:opacity-75",
+						templ.KV("bg-current", active == "/donate") }
+				>
+					<span class={ templ.KV("text-cw-bg", active == "/donate") }>Donate</span>
+				</a>
+			</div>
+			<!-- mobile toggle -->
+			<button
+				type="button"
+				class="lg:hidden"
+				@click="open = !open"
+				:aria-expanded="open"
+				aria-label="Toggle navigation menu"
+			>
+				<svg x-show="!open" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="4" y1="8" x2="20" y2="8"></line><line x1="4" y1="16" x2="20" y2="16"></line></svg>
+				<svg x-show="open" x-cloak width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+			</button>
+		</div>
+		<!-- mobile panel -->
+		<div
+			x-show="open"
+			x-cloak
+			x-transition
+			class="mx-4 mt-2 rounded-2xl border border-cw-line bg-cw-bg py-3 text-cw-ink shadow-[0_20px_50px_-24px_rgba(44,43,63,0.5)] lg:hidden"
+			@click.outside="open = false"
+		>
+			for _, item := range NavItems {
+				<a href={ templ.SafeURL(item.Href) } class={ "block px-6 py-2.5 text-[15px] transition hover:text-cw-gold-deep",
+					templ.KV("font-semibold text-cw-gold-deep", active == item.Href) }>{ item.Label }</a>
+			}
+			<div class="px-6 pb-1 pt-3">
+				<a href="/donate" class="inline-block rounded-full bg-cw-glow px-6 py-2.5 text-[14.5px] font-bold text-cw-ink">Donate</a>
+			</div>
+		</div>
+	</nav>
+}
+
+// navLink is one primary desktop nav item; the active page keeps a hairline
+// underline. Colour is inherited from the nav state so it flips with the hero.
+templ navLink(href, label string, active bool) {
+	<a
+		href={ templ.SafeURL(href) }
+		class={ "border-b-[1.5px] border-transparent pb-0.5 text-[14.5px] whitespace-nowrap transition hover:opacity-75",
+			templ.KV("border-current font-semibold", active) }
+	>{ label }</a>
+}
+
+// siteFooter closes every public page with a line of hope, the sitemap, and a
+// crisis-support note — some visitors arrive here in the rawest part of grief.
+templ siteFooter() {
+	<footer class="bg-cw-night px-6 pb-10 pt-[clamp(60px,8vw,90px)] text-cw-bg">
+		<div class="mx-auto max-w-6xl">
+			<p class="m-0 mb-12 max-w-[620px] font-lora text-[clamp(22px,3.2vw,30px)] font-normal italic leading-[1.45]">
+				The night was long. The light still came. It will come for you, too — and until it does, we'll sit with you in the dark.
+			</p>
+			<div class="flex flex-wrap items-start justify-between gap-10 border-t border-white/15 pt-9">
+				<div>
+					<div class="mb-2 font-lora text-[20px]">{ SiteName }</div>
+					<div class="max-w-[280px] text-[14px] leading-relaxed text-cw-bg/60">A community for parents and families after the loss of a baby or child.</div>
+				</div>
+				<div class="grid grid-cols-2 gap-x-10 gap-y-2.5">
+					<a href="/" class="text-left text-[14.5px] text-cw-bg/80 transition hover:text-cw-bg">Home</a>
+					for _, item := range NavItems {
+						<a href={ templ.SafeURL(item.Href) } class="text-left text-[14.5px] text-cw-bg/80 transition hover:text-cw-bg">{ item.Label }</a>
+					}
+					<a href="/donate" class="text-left text-[14.5px] text-cw-bg/80 transition hover:text-cw-bg">Donate</a>
+				</div>
+			</div>
+			<div class="mt-10 rounded-xl border border-white/12 bg-white/[0.06] px-6 py-5">
+				<div class="mb-2 text-[13px] font-semibold uppercase tracking-[0.14em] text-cw-glow">If tonight is heavy</div>
+				<p class="m-0 max-w-[720px] text-[15px] leading-[1.7] text-cw-bg/80">
+					Some of us arrive here in the rawest part of grief. If you are struggling to stay safe right now, please reach out — in the U.S. you can call or text <strong class="text-cw-bg">988</strong> to reach the Suicide &amp; Crisis Lifeline, any hour of any day. You do not have to carry tonight alone.
+				</p>
+			</div>
+			<div class="mt-9 text-[13px] text-cw-bg/45">&copy; { fmt.Sprint(Year()) } { SiteName }. Made by parents, for parents.</div>
+		</div>
+	</footer>
+}
+
+// ---------------------------------------------------------------------------
+// Shared "Carried With Us" page atoms
+// ---------------------------------------------------------------------------
+
+// cwEyebrow is the small terracotta label that sits above a heading.
+templ cwEyebrow(label string) {
+	<div class="mb-5 text-[13px] font-semibold uppercase tracking-[0.24em] text-cw-terracotta">{ label }</div>
+}
+
+// cwBtnPrimary is the muted-violet pill — the main call to action.
+templ cwBtnPrimary(href, label string) {
+	<a
+		href={ templ.SafeURL(href) }
+		class="inline-block rounded-full bg-cw-violet px-[26px] py-[14px] text-[15.5px] font-semibold text-cw-bg shadow-[0_12px_26px_-12px_rgba(85,87,138,0.65)] transition hover:bg-[#494b7a]"
+	>{ label }</a>
+}
+
+// cwBtnOutline is the quiet secondary action — a warm hairline pill.
+templ cwBtnOutline(href, label string) {
+	<a
+		href={ templ.SafeURL(href) }
+		class="inline-block rounded-full border border-cw-tan px-[26px] py-[14px] text-[15.5px] font-semibold text-cw-ink transition hover:bg-cw-card"
+	>{ label }</a>
+}
+
+// cwBtnGold is the candle-gold pill reserved for donation moments.
+templ cwBtnGold(href, label string) {
+	<a
+		href={ templ.SafeURL(href) }
+		class="inline-block rounded-full bg-cw-glow px-[30px] py-[14px] text-[15.5px] font-bold text-cw-ink transition hover:bg-[#d9ad6e]"
+	>{ label }</a>
+}
+
+// cwPhoto is a warm gradient stand-in for real photography or artwork, with a
+// small caption naming what belongs there. Fill the parent's box.
+templ cwPhoto(grad, caption string) {
+	<div class="relative h-full w-full overflow-hidden" style={ "background:" + grad }>
+		<div class="absolute inset-0" style="background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.05) 0 2px,transparent 2px 12px)"></div>
+		<div class="absolute bottom-3 left-3 rounded bg-cw-bg/70 px-2.5 py-1 font-mono text-[11px] text-cw-ink/60">{ caption }</div>
+	</div>
+}

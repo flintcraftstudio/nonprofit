@@ -1,110 +1,90 @@
 package view
 
+// HomePage is the public landing page for "Carried With Us": a dawn hero of
+// remembered names, the founders' mission, gentle pathways in, and an
+// invitation to give.
 templ HomePage() {
-	@Base("Home", "A secure, server-rendered starting point for software that lasts.", homeContent())
+	@SiteBase(
+		"A community for grieving parents",
+		"Carried With Us is a movement and community for parents and families whose lives have been changed by the loss of a baby or child. You are not alone.",
+		"/",
+		true,
+		homeContent(),
+	)
 }
 
 templ homeContent() {
-	<!-- Hero -->
-	<section class="relative overflow-hidden">
-		<div class="mx-auto max-w-5xl px-6 pb-20 pt-24 sm:px-12 sm:pb-28 sm:pt-36">
-			@eyebrow("Flintcraft Studio")
-			<h1 class="max-w-3xl font-display text-[44px] font-medium leading-[1.04] tracking-tight text-ff-paper sm:text-[76px]">
-				Software that feels<br/>
-				<span class="italic text-ff-glow">forged</span>, not assembled.
-			</h1>
-			<p class="mt-7 max-w-xl text-[16px] font-light leading-relaxed text-ff-ash">
-				The starting point for your next application — authentication, data, and
-				deployment already in place. Replace this copy with your product's story
-				and ship the rest.
-			</p>
-			<div class="mt-11 flex flex-wrap items-center gap-x-7 gap-y-4">
-				@primaryLink("/login", "Sign in")
-				@ghostLink("/contact", "Get in touch")
+	<div class="cw-page-fade">
+		<!-- Hero: a slow sunrise carrying children's names like candlelight -->
+		<section
+			class="cw-hero relative flex min-h-screen flex-col items-center justify-between overflow-hidden px-6 pb-[7vh] pt-[13vh]"
+			style="background:linear-gradient(180deg,#1c1b2d 0%,#201f33 22%,#322f4c 33%,#4a4463 43%,#6a6183 48%,#b5927f 51%,#e6c08a 56%,#f2e2c8 61%,#f4efe5 68%,#f4efe5 100%)"
+		>
+			<!-- glowing names field -->
+			<div class="pointer-events-none relative z-[2] mx-auto h-[clamp(160px,26vh,280px)] w-full max-w-[1040px] font-lora italic text-[#f6ead0]">
+				for _, n := range HeroNames {
+					<span class="cw-name absolute" style={ heroNameStyle(n) }>{ n.Name }</span>
+				}
 			</div>
-			<p class="mt-6 text-[13px] font-light text-ff-stone">
-				No account yet? <a href="/contact" class="text-ff-ash underline decoration-ff-ember-mid underline-offset-4 transition hover:text-ff-cream">Request access &rarr;</a>
-			</p>
-		</div>
-		<!-- Warm ember wash, low and to the right -->
-		<div class="pointer-events-none absolute -bottom-32 right-0 h-[460px] w-[560px] bg-[radial-gradient(at_70%_60%,#3a2417_0%,#1b1714_52%,transparent_78%)]"></div>
-	</section>
+			<!-- headline -->
+			<div class="cw-soft-rise relative z-[2] mx-auto max-w-[820px] px-5 text-center">
+				<div class="mb-[22px] text-[13px] font-semibold uppercase tracking-[0.26em] text-[#3a3252]">A movement for grieving parents &amp; families</div>
+				<h1 class="m-0 font-lora text-[clamp(38px,6vw,62px)] font-medium leading-[1.13] tracking-[-0.015em] text-cw-ink">You are not alone in this.<br/>You never were.</h1>
+				<p class="mx-auto mt-6 max-w-[600px] text-[clamp(17px,2.2vw,21px)] leading-[1.6] text-cw-violet">For every parent and family whose life has been changed by the loss of a baby or child — we are here, and we understand.</p>
+				<div class="mt-[34px] flex flex-wrap justify-center gap-4">
+					@cwBtnPrimary("/podcast", "Listen when you're ready")
+					@cwBtnOutline("/community", "Find others who understand")
+				</div>
+				<div class="mt-10 text-[13.5px] text-cw-muted">The names above belong to children who are loved and remembered.</div>
+			</div>
+		</section>
 
-	<!-- Capabilities — asymmetric: a heading column beside an editorial list -->
-	<section id="inside" class="border-t border-ff-border">
-		<div class="mx-auto grid max-w-5xl gap-x-12 gap-y-12 px-6 py-24 sm:px-12 sm:py-28 lg:grid-cols-[0.8fr_1.2fr]">
-			<div class="lg:sticky lg:top-24 lg:self-start">
-				@eyebrow("What's inside")
-				<h2 class="font-display text-[34px] font-medium leading-tight tracking-tight text-ff-paper sm:text-[44px]">
-					Built in from the first commit.
-				</h2>
-				<p class="mt-5 max-w-sm text-[15px] font-light leading-relaxed text-ff-ash">
-					Every project starts with the parts that are tedious to get right —
-					done, tested, and out of your way.
-				</p>
+		<!-- Mission / story -->
+		<section class="bg-cw-bg px-6 py-[clamp(70px,11vw,130px)]">
+			<div class="mx-auto max-w-[760px] text-center">
+				@cwEyebrow("Why we're here")
+				<p class="m-0 mb-7 font-lora text-[clamp(22px,3vw,29px)] font-normal leading-[1.5] text-cw-ink">We started Carried With Us because we have lived this. We are two mothers who know what it is to leave a hospital with empty arms — to plan a goodbye instead of a nursery, and to wonder how the world keeps turning.</p>
+				<p class="mx-auto max-w-[640px] text-[18px] leading-[1.75] text-cw-slate">For a long time, we each believed we were the only one. We weren't — and neither are you. This is the community we needed and couldn't find: a place where your child is remembered by name, where your grief is never too much, and where hope is allowed to sit quietly beside the sorrow. However long it has been, and however today is going, there is room for you here.</p>
+				<div class="mt-9">
+					@cwBtnOutline("/about", "Read our story")
+				</div>
 			</div>
-			<div>
-				@capability("01", "Authenticated by default", "Session-backed login, protected routes, CSRF and per-IP rate limiting — wired before you write a line.")
-				@capability("02", "Type-safe data", "SQL compiled straight to Go with sqlc. Migrations embedded in the binary and applied on boot.")
-				@capability("03", "Server-rendered speed", "templ and htmx return real HTML in a single request. No SPA bundle, no hydration wait.")
-				@capability("04", "Ships as one binary", "Build, embed, deploy. A single artifact behind Caddy — no runtime to assemble on the server.")
-			</div>
-		</div>
-	</section>
+		</section>
 
-	<!-- Operator sign-in band -->
-	<section class="relative overflow-hidden border-t border-ff-border">
-		<div class="mx-auto flex max-w-5xl flex-col gap-8 px-6 py-20 sm:flex-row sm:items-end sm:justify-between sm:px-12 sm:py-24">
-			<div>
-				<p class="mb-3 text-[11px] font-medium uppercase tracking-[0.2em] text-ff-ember">For operators</p>
-				<h2 class="font-display text-[36px] font-medium leading-tight tracking-tight text-ff-paper sm:text-[48px]">
-					Returning to manage your project?
-				</h2>
+		<!-- Pathways in -->
+		<section class="border-t border-cw-line bg-gradient-to-b from-cw-bg to-cw-sand px-6 py-[clamp(70px,10vw,120px)]">
+			<div class="mx-auto max-w-[1080px]">
+				<h2 class="m-0 mb-3 text-center font-lora text-[clamp(28px,4vw,40px)] font-medium tracking-[-0.01em] text-cw-ink">Come in, whenever you're ready</h2>
+				<p class="mx-auto mb-14 max-w-[560px] text-center text-[18px] text-cw-violet">There's no right way and no right order. These are just gentle doors — open the one that feels possible today.</p>
+				<div class="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-cw-line bg-cw-line sm:grid-cols-2">
+					@cwPathway("/podcast", "Listen when you're ready", "Honest conversations about loss and hope — for the days when all you can manage is a pair of headphones.", "The podcast")
+					@cwPathway("/community", "Find others who understand", "A free, gentle space with parents who speak your language — because they have walked it too.", "The community")
+					@cwPathway("/resources", "Take what you need", "Free guides and journaling prompts — and something gentle to hand the people who want to help.", "Resources")
+					@cwPathway("/events", "Come be together", "Retreats and gatherings, in person and online, held with care and no expectations.", "Events")
+				</div>
 			</div>
-			<div class="shrink-0">
-				@primaryLink("/login", "Sign in")
-			</div>
-		</div>
-		<div class="pointer-events-none absolute -left-24 -top-24 h-[360px] w-[460px] bg-[radial-gradient(at_30%_30%,#3a2417_0%,#1b1714_55%,transparent_80%)]"></div>
-	</section>
-}
+		</section>
 
-// eyebrow is the small accented label used above headings across the site.
-templ eyebrow(label string) {
-	<div class="mb-6 flex items-center gap-3">
-		<span class="block h-px w-7 bg-ff-ember"></span>
-		<span class="text-[11px] font-medium uppercase tracking-[0.2em] text-ff-ember">{ label }</span>
+		<!-- Donation invitation -->
+		<section class="relative overflow-hidden bg-cw-ink px-6 py-[clamp(70px,10vw,120px)]">
+			<div class="pointer-events-none absolute -top-[40%] left-1/2 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(228,190,131,0.22),transparent_65%)]"></div>
+			<div class="relative mx-auto max-w-[640px] text-center">
+				<h2 class="m-0 mb-5 font-lora text-[clamp(26px,4vw,38px)] font-normal leading-[1.3] text-cw-bg">If you feel called to carry this mission with us</h2>
+				<p class="m-0 mb-9 text-[18px] leading-[1.7] text-cw-bg/75">Everything here is offered freely to families in their hardest season. Gifts from people like you are what keep it that way.</p>
+				<div class="flex flex-wrap justify-center gap-4">
+					@cwBtnGold("/donate", "Support the mission")
+					<a href="/donate" class="inline-block rounded-full border border-white/40 px-[26px] py-[14px] text-[15.5px] font-semibold text-cw-bg transition hover:bg-white/10">Give monthly</a>
+				</div>
+			</div>
+		</section>
 	</div>
 }
 
-// capability is one editorial row in the "what's inside" list: a serif index
-// numeral, a title, and a description, separated by a hairline.
-templ capability(index, title, description string) {
-	<div class="flex gap-6 border-b border-ff-border py-7 first:pt-0">
-		<span class="mt-1 font-display text-[28px] italic leading-none text-ff-glow/70">{ index }</span>
-		<div>
-			<h3 class="text-[17px] font-medium text-ff-cream">{ title }</h3>
-			<p class="mt-2 max-w-md text-[14px] font-light leading-relaxed text-ff-ash">{ description }</p>
-		</div>
-	</div>
-}
-
-// primaryLink is the ember call-to-action button (dark ink on warm ember).
-templ primaryLink(href, label string) {
-	<a
-		href={ templ.SafeURL(href) }
-		class="rounded-sm bg-ff-ember px-[26px] py-[13px] text-[12px] font-medium uppercase tracking-[0.12em] text-[#1a1109] transition hover:bg-ff-ember-hover active:scale-[0.98]"
-	>
-		{ label } &rarr;
-	</a>
-}
-
-// ghostLink is the quiet secondary action — text only.
-templ ghostLink(href, label string) {
-	<a
-		href={ templ.SafeURL(href) }
-		class="text-[12px] font-medium uppercase tracking-[0.08em] text-ff-ash transition hover:text-ff-cream"
-	>
-		{ label }
+// cwPathway is one "gentle door" tile in the home pathways grid.
+templ cwPathway(href, title, desc, cta string) {
+	<a href={ templ.SafeURL(href) } class="group flex flex-col gap-3 bg-cw-card p-9 text-left transition hover:bg-[#faf5ec]">
+		<div class="font-lora text-[24px] text-cw-ink">{ title }</div>
+		<div class="text-[16px] leading-[1.6] text-cw-violet">{ desc }</div>
+		<div class="mt-1 text-[14.5px] font-semibold text-cw-gold-deep transition group-hover:translate-x-0.5">{ cta } &rarr;</div>
 	</a>
 }
