@@ -209,6 +209,32 @@ templ cwBtnGold(href, label string) {
 	>{ label }</a>
 }
 
+// cwImageSlot renders a replaceable image: the real photo once slot.Src is set,
+// otherwise a labeled gradient placeholder naming what image belongs there. It
+// fills its parent's box, so wrap it in a sized / aspect-ratio container.
+templ cwImageSlot(slot ImageSlot) {
+	if slot.Src != "" {
+		<img src={ slot.Src } alt={ slot.Alt } loading="lazy" decoding="async" class="h-full w-full object-cover"/>
+	} else {
+		<div class="relative flex h-full w-full items-center justify-center overflow-hidden" style={ "background:" + slot.Grad }>
+			<div class="absolute inset-0" style="background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.05) 0 2px,transparent 2px 12px)"></div>
+			<div class="relative flex items-center gap-2 rounded-full bg-cw-bg/85 px-3.5 py-2 font-mono text-[11px] text-cw-ink/70 shadow-[0_6px_18px_-10px_rgba(44,43,63,0.5)]">
+				<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="m21 15-5-5L5 21"></path></svg>
+				{ slot.Label }
+			</div>
+		</div>
+	}
+}
+
+// cwBgImageSlot is a full-bleed, decorative background image layer. It renders
+// only once a real image is set (no placeholder), so an empty slot leaves the
+// section's own background untouched. `class` tunes opacity / blend / position.
+templ cwBgImageSlot(slot ImageSlot, class string) {
+	if slot.Src != "" {
+		<img src={ slot.Src } alt="" aria-hidden="true" loading="lazy" decoding="async" class={ "pointer-events-none absolute inset-0 h-full w-full object-cover", class }/>
+	}
+}
+
 // cwPhoto is a warm gradient stand-in for real photography or artwork, with a
 // small caption naming what belongs there. Fill the parent's box.
 templ cwPhoto(grad, caption string) {

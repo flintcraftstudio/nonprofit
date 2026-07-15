@@ -150,6 +150,59 @@ const (
 	gradDusk   = "linear-gradient(150deg,#e9c9b6,#c98f92 50%,#7d6c82 100%)"
 )
 
+// ---------------------------------------------------------------------------
+// Public image slots — the ONE place to add real photography to the home page.
+//
+// Each section renders a labeled placeholder (naming what image belongs there)
+// until you set `Src` to a static path, e.g.:
+//
+//	FoundersImage.Src = "/static/img/founders.jpg"   // in main.go, or edit below
+//
+// The Label is the art-direction brief; grade real stock warm toward the cw-*
+// palette so mixed photos read as one shoot. After adding real files, run
+// /optimize-images to emit AVIF/WebP + a responsive <picture>.
+// ---------------------------------------------------------------------------
+
+// ImageSlot is a replaceable image placeholder. An empty Src shows the
+// placeholder; a set Src renders the real photo.
+type ImageSlot struct {
+	Src   string // set to a /static path to use a real image (empty = placeholder)
+	Alt   string // accessible description, used as alt text
+	Label string // art-direction brief shown on the empty placeholder
+	Grad  string // fallback gradient behind the placeholder label
+}
+
+var (
+	// HeroImage: optional full-bleed dawn photo blended under the hero gradient.
+	// The hero works as a pure gradient, so this stays hidden until you add one.
+	// To preview the dawn comp already in web/static/img: set
+	//   Src: "/static/img/hero-dawn.jpg"
+	HeroImage = ImageSlot{Alt: "Soft dawn light over a quiet horizon"}
+
+	// FoundersImage: the "two mothers" portrait — the highest-impact photo.
+	FoundersImage = ImageSlot{
+		Alt:   "The two mothers who founded Carried With Us",
+		Label: "Founders — two women, warm natural light",
+		Grad:  gradDusk,
+	}
+
+	// DonateImage: optional candlelight layer behind the dark donation section.
+	DonateImage = ImageSlot{Alt: "A single candle glowing in the dark"}
+
+	// PathwayImages: one quiet supporting image per pathway door, keyed by href.
+	PathwayImages = map[string]ImageSlot{
+		"/podcast":   {Alt: "Listening in a quiet morning moment", Label: "Headphones, quiet morning light", Grad: gradGold},
+		"/community": {Alt: "Hands held in gentle support", Label: "Hands together, warm and human", Grad: gradViolet},
+		"/resources": {Alt: "An open journal in soft light", Label: "Open journal, writing by hand", Grad: gradRose},
+		"/events":    {Alt: "Dawn over quiet mountains", Label: "Misty mountain dawn / retreat", Grad: gradDusk},
+	}
+)
+
+// pathwayImage returns the image slot for a pathway door (empty slot if none).
+func pathwayImage(href string) ImageSlot {
+	return PathwayImages[href]
+}
+
 // Episode is one podcast episode in the demo list.
 type Episode struct {
 	Num, Title, Desc, Len string
