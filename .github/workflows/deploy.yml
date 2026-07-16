@@ -35,24 +35,16 @@ jobs:
             ${{ env.IMAGE }}:latest
             ${{ env.IMAGE }}:${{ github.sha }}
 
-      - name: Sync compose file to VPS
-        uses: appleboy/scp-action@v1
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          source: docker-compose.prod.yml
-          target: /opt/${{ env.PROJECT }}
-
+      # The deploy key's authorized_keys entry (see provision.sh) forces the
+      # command `cd /opt/<project> && docker compose pull && docker compose up -d`
+      # on connect, so we just open one SSH session — the server does the rest
+      # against its own /opt/<project>/docker-compose.yml (which pulls :latest).
+      # No compose file is copied: a forced-command key can't run scp, and the
+      # server already has its compose file from provisioning.
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          # Deploy the SHA tag, not :latest, so restarts stay pinned to this build.
-          script: |
-            cd /opt/${{ env.PROJECT }}
-            export IMAGE=${{ env.IMAGE }}:${{ github.sha }}
-            docker compose -f docker-compose.prod.yml pull
-            docker compose -f docker-compose.prod.yml up -d
+          script: cd /opt/${{ env.PROJECT }} && docker compose pull && docker compose up -d
