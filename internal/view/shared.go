@@ -174,10 +174,10 @@ type ImageSlot struct {
 
 var (
 	// HeroImage: optional full-bleed dawn photo blended under the hero gradient.
-	// The hero works as a pure gradient, so this stays hidden until you add one.
-	// To preview the dawn comp already in web/static/img: set
-	//   Src: "/static/img/hero-dawn.jpg"
-	HeroImage = ImageSlot{Alt: "Soft dawn light over a quiet horizon"}
+	// The hero works as a pure gradient, so set Src to "" to fall back to it.
+	// hero-dawn.jpg is a licensed Adobe Stock image (ID 1881503913), resized to
+	// 2400px and optimized for web.
+	HeroImage = ImageSlot{Src: "/static/img/hero-dawn.jpg", Alt: "Soft dawn light over a quiet horizon"}
 
 	// FoundersImage: the "two mothers" portrait — the highest-impact photo.
 	FoundersImage = ImageSlot{

@@ -44,3 +44,6 @@ data/
 
 # sqlc generated code
 internal/db/
+
+# Raw stock photo previews (unlicensed watermarked downloads — local only)
+stock/
